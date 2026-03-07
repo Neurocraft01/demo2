@@ -8,12 +8,12 @@ import { SITE_CONFIG } from '@/data/site';
 export default function Header() {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-    const [theme, setTheme] = useState<'dark' | 'light'>('light');
+    const [theme, setTheme] = useState<'dark' | 'light'>('dark');
     const pathname = usePathname();
 
     useEffect(() => {
         const saved = localStorage.getItem('aks-theme') as 'dark' | 'light' | null;
-        const initial = saved || 'light';
+        const initial = saved || 'dark';
         setTheme(initial);
         document.documentElement.setAttribute('data-theme', initial);
     }, []);
