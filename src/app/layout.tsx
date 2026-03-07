@@ -22,13 +22,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={outfit.variable} data-theme="dark">
+    <html lang="en" className={outfit.variable} data-theme="dark" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://unpkg.com" />
-        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              try {
+                var theme = localStorage.getItem('aks-theme');
+                if (!theme) {
+                  theme = 'dark';
+                  localStorage.setItem('aks-theme', 'dark');
+                }
+                document.documentElement.setAttribute('data-theme', theme);
+                
+                var l1 = document.createElement('link'); l1.rel = 'stylesheet'; l1.href = 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'; document.head.appendChild(l1);
+                var l2 = document.createElement('link'); l2.rel = 'stylesheet'; l2.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200'; document.head.appendChild(l2);
+              } catch (e) {}
+            })();
+          `
+        }} />
+        <noscript>
+          <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+          <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+        </noscript>
       </head>
       <body className={outfit.className}>
         <SmoothScroller>
