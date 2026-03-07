@@ -66,7 +66,7 @@ export default function HeroSection() {
                 </div>
 
                 <motion.p
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.8 }}
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.1 }}
                     className="hero-subtitle"
                 >
                     {HERO_CONTENT.subtitle}
@@ -74,9 +74,9 @@ export default function HeroSection() {
             </motion.div>
 
             <motion.div
-                style={{ position: 'absolute', inset: 0, zIndex: 0, scale: imageScale }}
-                initial={{ scale: 1.2, filter: 'blur(20px)', opacity: 0 }}
-                animate={{ scale: 1, filter: 'blur(0px)', opacity: 0.2 }}
+                style={{ position: 'absolute', inset: 0, zIndex: 0, scale: imageScale, willChange: 'transform, opacity' }}
+                initial={{ scale: 1.1, opacity: 0 }}
+                animate={{ scale: 1, opacity: 0.2 }}
                 transition={{ duration: 2, ease: 'easeOut' }}
             >
                 <Image src="/images/gradient.png" alt="Hero Background" fill style={{ objectFit: 'cover' }} priority sizes="100vw" quality={60} />
