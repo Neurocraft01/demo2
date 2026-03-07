@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { SITE_CONFIG } from '@/data/site';
 
 export default function Header() {
     const [scrolled, setScrolled] = useState(false);
@@ -34,27 +35,19 @@ export default function Header() {
         localStorage.setItem('aks-theme', next);
     };
 
-    const navLinks = [
-        { href: '/', label: 'Home' },
-        { href: '/about', label: 'About' },
-        { href: '/services', label: 'Services' },
-        { href: '/projects', label: 'Projects' },
-        { href: '/contact', label: 'Contact' },
-    ];
-
     return (
         <>
             <header className={`header${scrolled ? ' scrolled' : ''}`} id="header">
                 <div className="header-inner">
                     {/* Logo */}
                     <Link href="/" className="logo">
-                        <div className="logo-icon">AKS</div>
+                        <div className="logo-icon">{SITE_CONFIG.logo.short}</div>
                         <span className="logo-text">AKS<em>Automations</em></span>
                     </Link>
 
                     {/* Desktop Nav */}
                     <nav className="desktop-nav">
-                        {navLinks.map((link) => (
+                        {SITE_CONFIG.navLinks.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
@@ -79,10 +72,10 @@ export default function Header() {
 
                         {/* Social Icons */}
                         <div className="social-icons">
-                            <a href="https://www.instagram.com/aks_automation/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                            <a href={SITE_CONFIG.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                                 <i className="bx bxl-instagram" />
                             </a>
-                            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                            <a href={SITE_CONFIG.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                                 <i className="bx bxl-linkedin" />
                             </a>
                         </div>
@@ -116,7 +109,7 @@ export default function Header() {
                         <i className="bx bx-x" />
                     </button>
                     <nav className="mobile-nav">
-                        {navLinks.map((link) => (
+                        {SITE_CONFIG.navLinks.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}

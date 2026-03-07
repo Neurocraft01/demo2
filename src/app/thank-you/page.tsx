@@ -57,7 +57,7 @@ export default function ThankYouPage() {
                                 Here&apos;s What <span className="grad-text">Happens Next</span>
                             </h2>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+                        <div className="stats-band-grid" style={{ gap: '20px' }}>
                             {STEPS.map((s) => (
                                 <div key={s.step} style={{
                                     background: 'var(--bg-3)', border: '1px solid var(--border)', borderRadius: 'var(--r-xl)',

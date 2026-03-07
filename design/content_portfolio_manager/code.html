@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Content &amp; Portfolio Manager | AKS Automations</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#2D5BFF",
+                        "background-light": "#F8FAFC",
+                        "background-dark": "#0F172A",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.75rem",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<aside class="fixed left-0 top-0 h-full w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 z-50 transition-all duration-300">
+<div class="p-6 flex items-center space-x-2">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
+<span class="text-white font-bold text-lg">A</span>
+</div>
+<span class="font-extrabold text-xl tracking-tight">AKS CMS</span>
+</div>
+<nav class="mt-4 px-4 space-y-2">
+<a class="flex items-center space-x-3 px-4 py-3 bg-primary/10 text-primary rounded-lg font-medium" href="#">
+<span class="material-symbols-outlined">dashboard_customize</span>
+<span>Page Editor</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">layers</span>
+<span>Portfolio</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span>Inquiries</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Site Stats</span>
+</a>
+<div class="pt-10">
+<span class="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Settings</span>
+<a class="flex items-center space-x-3 px-4 py-3 mt-2 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Global SEO</span>
+</a>
+</div>
+</nav>
+<div class="absolute bottom-0 w-full p-4 border-t border-slate-200 dark:border-slate-800">
+<button class="flex items-center space-x-3 px-4 py-2 w-full text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-symbols-outlined">dark_mode</span>
+<span>Toggle Theme</span>
+</button>
+</div>
+</aside>
+<main class="ml-64 flex min-h-screen">
+<div class="w-1/2 p-8 border-r border-slate-200 dark:border-slate-800 overflow-y-auto custom-scrollbar max-h-screen">
+<header class="flex justify-between items-end mb-8">
+<div>
+<h1 class="text-3xl font-extrabold tracking-tight mb-2">Editor</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Managing: <span class="font-semibold text-slate-800 dark:text-slate-200">Homepage</span></p>
+</div>
+<div class="flex space-x-3">
+<button class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-all font-medium text-sm">Discard</button>
+<button class="px-6 py-2 bg-primary text-white rounded-lg hover:shadow-lg hover:shadow-primary/25 transition-all font-semibold text-sm">Publish Changes</button>
+</div>
+</header>
+<div class="mb-8">
+<label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Active Page</label>
+<div class="relative">
+<select class="w-full bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 focus:ring-primary focus:border-primary appearance-none">
+<option>Home — Primary Landing</option>
+<option>Selected Works — Portfolio Archive</option>
+<option>About — Agency Identity</option>
+<option>Services — Capabilities</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-3 pointer-events-none opacity-50">expand_more</span>
+</div>
+</div>
+<div class="space-y-10">
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-sm font-bold uppercase tracking-widest text-primary">Hero Section</h2>
+<span class="bg-blue-50 dark:bg-blue-900/30 text-primary text-[10px] px-2 py-0.5 rounded-full font-bold">VISIBLE</span>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm space-y-6">
+<div>
+<label class="block text-sm font-medium mb-2">Main Headline</label>
+<textarea class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 focus:ring-primary h-24 text-lg font-bold leading-tight" placeholder="Enter headline...">We bridge the gap between aesthetics and engineering.</textarea>
+</div>
+<div>
+<label class="block text-sm font-medium mb-2">Supporting Text</label>
+<textarea class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 focus:ring-primary h-20 text-slate-600 dark:text-slate-400" placeholder="Enter description...">AKS Automations is a next-generation tech agency. We don't just build websites; we engineer high-performance platforms.</textarea>
+</div>
+<div class="flex space-x-4">
+<div class="flex-1">
+<label class="block text-sm font-medium mb-2">Primary CTA Text</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl py-2 px-4 focus:ring-primary" type="text" value="Discover Our Agency"/>
+</div>
+<div class="flex-1">
+<label class="block text-sm font-medium mb-2">CTA Link</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl py-2 px-4 focus:ring-primary" type="text" value="/about"/>
+</div>
+</div>
+</div>
+</section>
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-sm font-bold uppercase tracking-widest text-primary">Selected Works</h2>
+<button class="text-primary text-xs font-bold hover:underline flex items-center space-x-1">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>Add Case Study</span>
+</button>
+</div>
+<div class="space-y-4">
+<div class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm hover:border-primary/50 transition-all flex items-center">
+<div class="cursor-grab p-2 text-slate-300 dark:text-slate-700 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="w-20 h-14 bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden flex-shrink-0 mx-2">
+<img alt="YOMA Company thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgWXVtTCV3t9gnc7hkPzfU7z8jFmtG5t738Nf7AppWNbV_Qys6KS0l40IB_sFKLfK_APqkBQ6jiJa-ciMDhvhGM8-U5pkBTerpo_j4lavwmJzaX49dBkc8nTwHKyZmhSPWt18YEehsJKESVAmch-VlOqZCUkhc0stv7n73HPvB8I03cmKkk4kFldo7kaCAQcODn1pH1XAEWMQuBaDQBRkBRAdtrhNg22Hl9nz5FjvRl2bzj6ayaWBM2vYOmDaxp8VXs57lIJJxlw"/>
+</div>
+<div class="flex-1 px-2">
+<h4 class="font-bold text-sm">YOMA Company</h4>
+<p class="text-xs text-slate-500 uppercase">Web Development / 3D</p>
+</div>
+<div class="flex space-x-1">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</div>
+<div class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm hover:border-primary/50 transition-all flex items-center">
+<div class="cursor-grab p-2 text-slate-300 dark:text-slate-700 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="w-20 h-14 bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden flex-shrink-0 mx-2">
+<img alt="Drinkos Solutions thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFoMUpiDl_vL_iMOFK8iN9_czrG-A18hauwKG1TqaClxgwsys21j4FSJ65IJp9Nzw19nFXaohmicyEM3-wp5pCVUrqH5CNKOx3G81L9bKS5dMmoOousA-K0UQkXGlxZUgk4S_oPs23kYGt-j4k3RtKNScTmIzdGaMRuwZIbYxOi78h3bMbO2hkbEgrbD_nrWosbhAwieYXpSV_U2KymEwEf51AzwyZQ1nOq_BJEI0Owcmukg7wStlAckCeQEzQ-dqoWb580xvxzA"/>
+</div>
+<div class="flex-1 px-2">
+<h4 class="font-bold text-sm">Drinkos Solutions</h4>
+<p class="text-xs text-slate-500 uppercase">E-Commerce / UI/UX</p>
+</div>
+<div class="flex space-x-1">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</div>
+<div class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm hover:border-primary/50 transition-all flex items-center">
+<div class="cursor-grab p-2 text-slate-300 dark:text-slate-700 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="w-20 h-14 bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden flex-shrink-0 mx-2">
+<img alt="Yash Enterprises thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-qTXJiKH3mVVA28c1nV-ZeAmDXfgRM-Nd-0P8WUC5yYoUNMlm9HfKPeZlCMD-UZ5ZfTOs49ajYeOgT4brAEkfMiBOlRo_sAEmOdjSiwtiM-VuTk1DliKDea9CxPy0bURSK_vFX_JIpn2p-4W2GeOP0I13RWN5jy4leH9I0wfqYJHHwSFUjlbPE5ZZrsNE8wh-M5ZEsIvTgAAyfVQxZw6ywPJDgMucnco2cLyr7E9SPg6BeZSmNQyLr-fCb_xcmLzUSWQAV2MVQQ"/>
+</div>
+<div class="flex-1 px-2">
+<h4 class="font-bold text-sm">Yash Enterprises</h4>
+<p class="text-xs text-slate-500 uppercase">Corporate Website</p>
+</div>
+<div class="flex space-x-1">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<section class="pb-20">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-sm font-bold uppercase tracking-widest text-primary">Engagement Stats</h2>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl">
+<label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Global Clients</label>
+<input class="w-full text-2xl font-black text-primary bg-transparent border-none p-0 focus:ring-0" type="text" value="50+"/>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl">
+<label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Products</label>
+<input class="w-full text-2xl font-black text-primary bg-transparent border-none p-0 focus:ring-0" type="text" value="80+"/>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl">
+<label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Commitment</label>
+<input class="w-full text-2xl font-black text-primary bg-transparent border-none p-0 focus:ring-0" type="text" value="100%"/>
+</div>
+</div>
+</section>
+</div>
+</div>
+<div class="w-1/2 bg-slate-100 dark:bg-slate-950 p-8 sticky top-0 h-screen overflow-hidden flex flex-col">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+<h3 class="font-bold text-sm tracking-wide">LIVE PREVIEW</h3>
+</div>
+<div class="flex bg-slate-200 dark:bg-slate-800 p-1 rounded-lg">
+<button class="px-3 py-1 bg-white dark:bg-slate-700 rounded shadow-sm">
+<span class="material-symbols-outlined text-lg">desktop_windows</span>
+</button>
+<button class="px-3 py-1 text-slate-500">
+<span class="material-symbols-outlined text-lg">tablet_mac</span>
+</button>
+<button class="px-3 py-1 text-slate-500">
+<span class="material-symbols-outlined text-lg">smartphone</span>
+</button>
+</div>
+</div>
+<div class="flex-1 bg-white dark:bg-[#0a0a0a] rounded-t-3xl border-t border-x border-slate-300 dark:border-slate-800 overflow-y-auto custom-scrollbar shadow-2xl">
+<div class="px-10 py-6 flex justify-between items-center border-b border-slate-50 dark:border-slate-900/50">
+<div class="flex items-center space-x-2">
+<div class="w-6 h-6 bg-primary rounded"></div>
+<span class="font-black text-sm">AKS Automations</span>
+</div>
+<div class="flex space-x-6 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+<span>Home</span>
+<span>Projects</span>
+<span>About</span>
+<div class="bg-primary text-white px-3 py-1 rounded">Contact</div>
+</div>
+</div>
+<div class="px-12 py-16 max-w-4xl mx-auto">
+<div class="flex justify-between items-start gap-12">
+<div class="w-3/5">
+<h2 class="text-4xl font-extrabold leading-tight mb-6">
+                                We bridge the gap between <span class="text-slate-400 line-through decoration-primary/40 decoration-4">aesthetics</span> and <span class="text-primary">engineering</span>.
+                            </h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-8">
+                                AKS Automations is a next-generation tech agency. We don't just build websites; we engineer high-performance platforms that dominate the digital space. Focus on smooth UI, seamless loading, and premium design.
+                            </p>
+<button class="px-8 py-3 bg-primary text-white font-bold rounded-lg text-xs tracking-wider">DISCOVER OUR AGENCY</button>
+</div>
+</div>
+</div>
+<div class="px-12 py-10 bg-slate-50 dark:bg-slate-900/30">
+<h3 class="text-2xl font-black mb-12">SELECTED <span class="text-primary">WORKS</span></h3>
+<div class="space-y-24">
+<div class="flex gap-8 items-center">
+<div class="w-1/2 aspect-video bg-slate-200 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl">
+<img alt="YOMA" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKa0ox7ZonInso4lEHPE8GvSDDz4wFyunTvrEFeN_AL7DNk_Q613EvlgvJUINPB-qVdiZZWMLPpNYbPm882kWHoHoidhu7Z7JRMsxqDyKslnMGPlradK7HHrtnok9iTDcBYbVC6PBMyT4XUWjBP6PpGXrK78c_cS_lqZCz23KsmoFZBbCq2sd7YF-pvmj_br1gGJYbfT-qchfoN0-gc7uPgNvGkYnvBhsWc5dzfkASnFNE7MA6WlHo3MAehHfdqjaXY2fU_C38fw"/>
+</div>
+<div class="w-1/2">
+<span class="text-[10px] font-black text-primary tracking-widest">01 — WEB DEVELOPMENT / 3D</span>
+<h4 class="text-3xl font-extrabold mt-2 mb-4">YOMA Company</h4>
+<button class="px-6 py-2 border border-slate-200 dark:border-slate-800 rounded-full text-[10px] font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">EXPLORE CASE STUDY</button>
+</div>
+</div>
+<div class="flex flex-row-reverse gap-8 items-center">
+<div class="w-1/2 aspect-video bg-slate-200 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl">
+<img alt="Drinkos" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3IHtv4WZ1BBWBm1hAemJtzK15BQEX_-YsxliPNPQGAi4n6LYFRI7bJW731wDr1ATOOiRp5y3PqQ3WfQdNAkEguBDRxD-FaCrLHH4GkCHHDzXb08Whz5WrNVC7uGQeRMVB3TLVu8VBteIs8dBlgZxbJeMnrRau6KAktd-NNV1veqh0DpSGbysN2eOczcFL_g1lKxmQ7jCCaMS5MKl88TQp3hk86ZNT5Df_FgNl4QLl5VGjDaf0gF-hBz_BvJ7zFzZGZtNX5gAAdA"/>
+</div>
+<div class="w-1/2">
+<span class="text-[10px] font-black text-primary tracking-widest uppercase">02 — E-Commerce / UI/UX</span>
+<h4 class="text-3xl font-extrabold mt-2 mb-4">Drinkos Solutions</h4>
+<button class="px-6 py-2 border border-slate-200 dark:border-slate-800 rounded-full text-[10px] font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">EXPLORE CASE STUDY</button>
+</div>
+</div>
+</div>
+</div>
+<div class="p-12 text-center border-t border-slate-100 dark:border-slate-900">
+<h2 class="text-5xl font-black tracking-tighter mb-4">HAVE A VISION?</h2>
+<h2 class="text-5xl font-black tracking-tighter text-primary/20 mb-10">LET'S BUILD IT.</h2>
+<button class="px-10 py-4 bg-primary text-white font-bold rounded-xl shadow-xl shadow-primary/30">START A PROJECT</button>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-8 right-8 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center space-x-3 transform translate-y-24 opacity-0 transition-all duration-500 pointer-events-none" id="toast">
+<span class="material-symbols-outlined text-green-400">check_circle</span>
+<span class="text-sm font-medium">Changes published successfully!</span>
+</div>
+
+</body></html>
