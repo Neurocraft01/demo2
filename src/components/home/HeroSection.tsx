@@ -79,7 +79,7 @@ export default function HeroSection() {
                 animate={{ scale: 1, filter: 'blur(0px)', opacity: 0.2 }}
                 transition={{ duration: 2, ease: 'easeOut' }}
             >
-                <Image src="/images/gradient.png" alt="Hero Background" fill style={{ objectFit: 'cover' }} priority />
+                <Image src="/images/gradient.png" alt="Hero Background" fill style={{ objectFit: 'cover' }} priority sizes="100vw" quality={60} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent, var(--bg) 95%)' }} />
             </motion.div>
         </section>

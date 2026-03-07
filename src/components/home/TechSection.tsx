@@ -13,7 +13,7 @@ export default function TechSection() {
                     {[...TECH_STACK, ...TECH_STACK].map((tech, i) => (
                         <div key={i} className="tech-tile">
                             <div className="tech-tile-icon" style={{ position: 'relative', width: '64px', height: '64px' }}>
-                                <Image src={tech.icon} alt={tech.name} fill style={{ objectFit: 'contain' }} loading="lazy" />
+                                <Image src={tech.icon} alt={tech.name} fill style={{ objectFit: 'contain' }} loading="lazy" sizes="64px" quality={80} />
                             </div>
                         </div>
                     ))}
