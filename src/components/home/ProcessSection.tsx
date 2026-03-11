@@ -1,22 +1,33 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useRef, useEffect, useState } from 'react';
 import { PROCESS_CONTENT } from '@/data/home';
 
 export default function ProcessSection() {
+    const ref = useRef<HTMLDivElement>(null);
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.1 });
+        obs.observe(el);
+        return () => obs.disconnect();
+    }, []);
+
     return (
-        <section className="process-section" style={{ padding: '100px 5vw' }}>
+        <section className="process-section" style={{ padding: '100px 5vw' }} ref={ref}>
             <div style={{ textAlign: 'center', marginBottom: '60px' }}>
                 <h2 className="section-title-large" style={{ fontSize: '3rem' }}>{PROCESS_CONTENT.title}</h2>
                 <p style={{ color: 'var(--ink-3)', fontSize: '18px', marginTop: '16px' }}>{PROCESS_CONTENT.subtitle}</p>
             </div>
 
-            <div className="process-grid">
+            <div className={`process-grid ${visible ? 'in-view' : ''}`}>
                 {PROCESS_CONTENT.steps.map((step, i) => (
-                    <motion.div
+                    <div
                         key={step.num}
-                        initial={{ opacity: 0, scale: 0.95, y: 30 }} whileInView={{ opacity: 1, scale: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
-                        className="process-step"
+                        className="process-step fade-in-up"
+                        style={{ transitionDelay: `${i * 100}ms` }}
                     >
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '32px' }}>
                             <div className="p-num">0{step.num}</div>
@@ -24,7 +35,7 @@ export default function ProcessSection() {
                         </div>
                         <h3 style={{ fontSize: '22px', marginBottom: '12px', fontWeight: 800 }}>{step.title}</h3>
                         <p style={{ fontSize: '15px', color: 'var(--ink-3)', lineHeight: 1.6 }}>{step.desc}</p>
-                    </motion.div>
+                    </div>
                 ))}
             </div>
         </section>

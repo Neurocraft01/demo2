@@ -1,14 +1,11 @@
-import dynamic from 'next/dynamic';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/home/HeroSection';
-
-// Lazy load below-the-fold features to significantly reduce initial TTI and TBT.
 import IntroSection from '@/components/home/IntroSection';
 import TechSection from '@/components/home/TechSection';
-const ProcessSection = dynamic(() => import('@/components/home/ProcessSection'));
-const FeaturesSection = dynamic(() => import('@/components/home/FeaturesSection'));
-const CtaSection = dynamic(() => import('@/components/home/CtaSection'));
+import ProcessSection from '@/components/home/ProcessSection';
+import FeaturesSection from '@/components/home/FeaturesSection';
+import CtaSection from '@/components/home/CtaSection';
 
 export default function HomePage() {
   return (

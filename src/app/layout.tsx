@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
-import SmoothScroller from "@/components/SmoothScroller";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 
 const outfit = Outfit({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
   preload: true,
   variable: "--font-outfit",
@@ -26,24 +25,13 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://unpkg.com" />
-        <link rel="preload" href="https://unpkg.com/boxicons@2.1.4/fonts/boxicons.woff2" as="font" type="font/woff2" crossOrigin="" />
+        {/* Theme init — must run before paint to avoid flash */}
         <script dangerouslySetInnerHTML={{
-          __html: `
-            (function() {
-              try {
-                var theme = localStorage.getItem('aks-theme');
-                if (!theme) {
-                  theme = 'dark';
-                  localStorage.setItem('aks-theme', 'dark');
-                }
-                document.documentElement.setAttribute('data-theme', theme);
-                
-                var l1 = document.createElement('link'); l1.rel = 'stylesheet'; l1.href = 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'; document.head.appendChild(l1);
-                var l2 = document.createElement('link'); l2.rel = 'stylesheet'; l2.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'; document.head.appendChild(l2);
-              } catch (e) {}
-            })();
-          `
+          __html: `(function(){try{var t=localStorage.getItem('aks-theme');if(!t){t='dark';localStorage.setItem('aks-theme','dark')}document.documentElement.setAttribute('data-theme',t)}catch(e){}})();`
+        }} />
+        {/* Load external icon stylesheets non-blocking via JS after DOM is ready */}
+        <script dangerouslySetInnerHTML={{
+          __html: `window.addEventListener('load',function(){var a=['https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css','https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'];a.forEach(function(h){var l=document.createElement('link');l.rel='stylesheet';l.href=h;document.head.appendChild(l)})});`
         }} />
         <noscript>
           <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
@@ -51,10 +39,8 @@ export default function RootLayout({
         </noscript>
       </head>
       <body className={outfit.className}>
-        <SmoothScroller>
-          {children}
-        </SmoothScroller>
-      </body >
-    </html >
+        {children}
+      </body>
+    </html>
   );
 }

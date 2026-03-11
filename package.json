@@ -9,16 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@studio-freight/lenis": "^1.0.42",
+    "@supabase/supabase-js": "^2.99.0",
     "cloudinary": "^2.9.0",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.34.5",
     "next": "16.1.6",
     "next-cloudinary": "^6.17.5",
     "nodemailer": "^8.0.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "tailwind-merge": "^3.5.0"
+    "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@types/node": "^20",

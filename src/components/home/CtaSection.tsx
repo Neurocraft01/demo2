@@ -1,20 +1,25 @@
 'use client';
 
+import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { CTA_CONTENT } from '@/data/home';
 import { SITE_CONFIG } from '@/data/site';
 
 export default function CtaSection() {
+    const ref = useRef<HTMLDivElement>(null);
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.2 });
+        obs.observe(el);
+        return () => obs.disconnect();
+    }, []);
+
     return (
-        <section className="cta-band" style={{ padding: '120px 5vw' }}>
-            <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1 }}
-                className="cta-band-inner"
-            >
+        <section className="cta-band" style={{ padding: '120px 5vw' }} ref={ref}>
+            <div className={`cta-band-inner ${visible ? 'cta-visible' : ''}`}>
                 <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', lineHeight: 1.1 }}>
                     {CTA_CONTENT.title}
                 </h2>
@@ -29,7 +34,7 @@ export default function CtaSection() {
                         {CTA_CONTENT.cta2Text}
                     </Link>
                 </div>
-            </motion.div>
+            </div>
         </section>
     );
 }
