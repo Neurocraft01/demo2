@@ -1,24 +1,16 @@
-'use client';
-
-import { useEffect } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { ABOUT_HERO, TEAM, VALUES, ABOUT_STATS, MILESTONES, STORY, LOCATION, ABOUT_MISSION } from '@/data/about';
-import { SITE_CONFIG } from '@/data/site';
+import Observer from '@/components/Observer';
+import { getSiteContent } from '@/lib/content';
 
-export default function AboutPage() {
-    useEffect(() => {
-        const obs = new IntersectionObserver(
-            (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } }),
-            { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-        );
-        document.querySelectorAll('.anim').forEach((el) => obs.observe(el));
-        return () => obs.disconnect();
-    }, []);
+export default async function AboutPage() {
+    const { ABOUT_HERO, TEAM, VALUES, ABOUT_STATS, MILESTONES, STORY, LOCATION, ABOUT_MISSION } = await getSiteContent<any>('about');
+    const { SITE_CONFIG } = await getSiteContent<any>('site');
 
     return (
         <>
+            <Observer />
             <Header />
             <main>
 
@@ -55,7 +47,7 @@ export default function AboutPage() {
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px', maxWidth: '1200px', margin: '0 auto' }}>
-                        {ABOUT_MISSION.cards.map((card) => (
+                        {ABOUT_MISSION.cards.map((card: any) => (
                             <div key={card.title} className="about-card anim" style={{ display: 'block', background: 'var(--bg-2)' }}>
                                 <div className="about-card-icon" style={{ marginBottom: '24px' }}>
                                     <i className={`bx ${card.icon}`} style={{ fontSize: '24px' }} />
@@ -72,7 +64,7 @@ export default function AboutPage() {
                 {/* ─── STATS ─── */}
                 <section className="stats-band">
                     <div className="stats-band-grid">
-                        {ABOUT_STATS.map((s) => (
+                        {ABOUT_STATS.map((s: any) => (
                             <div key={s.label} className="anim" style={{ textAlign: 'center' }}>
                                 <div className="stat-value">{s.value}</div>
                                 <div className="stat-label">{s.label}</div>
@@ -87,7 +79,7 @@ export default function AboutPage() {
                         <div className="anim">
                             <div className="eyebrow">Our Story</div>
                             <h2 className="story-title">
-                                {STORY.title.split('\n').map((line, i) => (
+                                {STORY.title.split('\n').map((line: any, i: any) => (
                                     <span key={i}>{line}{i === 0 && <br />}</span>
                                 ))}
                             </h2>
@@ -102,7 +94,7 @@ export default function AboutPage() {
 
                         {/* Timeline */}
                         <div className="anim" style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-                            {MILESTONES.map((m, i) => (
+                            {MILESTONES.map((m: any, i: any) => (
                                 <div key={m.year} style={{ display: 'flex', gap: '20px', paddingBottom: i < MILESTONES.length - 1 ? '28px' : '0', position: 'relative' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
                                         <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: 'var(--blue)', color: '#fff', fontWeight: 800, fontSize: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{m.year}</div>
@@ -127,7 +119,7 @@ export default function AboutPage() {
                             <p>The principles behind every decision we make and every line of code we write</p>
                         </div>
                         <div className="features-grid">
-                            {VALUES.map((v) => (
+                            {VALUES.map((v: any) => (
                                 <div key={v.title} className="feat-card anim">
                                     <div className="feat-icon">{v.icon}</div>
                                     <h4>{v.title}</h4>
@@ -146,7 +138,7 @@ export default function AboutPage() {
                         <p>A tight-knit group of builders, thinkers, and problem-solvers</p>
                     </div>
                     <div className="team-grid">
-                        {TEAM.map((member) => (
+                        {TEAM.map((member: any) => (
                             <div key={member.name} className="team-card anim">
                                 <div style={{ fontSize: '3.5rem', marginBottom: '20px', display: 'block' }}>{member.emoji}</div>
                                 <div style={{ fontWeight: 800, fontSize: '18px', color: 'var(--ink)', marginBottom: '6px' }}>{member.name}</div>
@@ -169,7 +161,7 @@ export default function AboutPage() {
                                 {LOCATION.description}
                             </p>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                {LOCATION.details.map(item => (
+                                {LOCATION.details.map((item: any) => (
                                     <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--ink-3)', fontSize: '15px' }}>
                                         <i className={`bx ${item.icon}`} style={{ color: 'var(--blue)', fontSize: '20px', flexShrink: 0 }} />
                                         {item.text}

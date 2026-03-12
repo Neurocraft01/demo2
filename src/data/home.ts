@@ -24,27 +24,27 @@ export const INTRO_CONTENT = {
 };
 
 export const TECH_STACK = [
-    { name: 'AWS', icon: '/images/tools/aws.webp' },
-    { name: 'Claude', icon: '/images/tools/claude.webp' },
-    { name: 'Docker', icon: '/images/tools/docker.webp' },
-    { name: 'Figma', icon: '/images/tools/figma.webp' },
-    { name: 'Gemini', icon: '/images/tools/gemini.webp' },
-    { name: 'Grok', icon: '/images/tools/grok.webp' },
-    { name: 'Groq', icon: '/images/tools/groq.webp' },
-    { name: 'Google Cloud', icon: '/images/tools/googlecloud.webp' },
-    { name: 'Make', icon: '/images/tools/make.webp' },
-    { name: 'Meta', icon: '/images/tools/meta.webp' },
-    { name: 'n8n', icon: '/images/tools/n8n.webp' },
-    { name: 'Netlify', icon: '/images/tools/netlify.webp' },
-    { name: 'Notion', icon: '/images/tools/notion.webp' },
-    { name: 'OpenRouter', icon: '/images/tools/openrouter.webp' },
-    { name: 'OpenAI', icon: '/images/tools/openai.webp' },
-    { name: 'PowerBI', icon: '/images/tools/powerbi.webp' },
-    { name: 'Tableau', icon: '/images/tools/tableau.webp' },
-    { name: 'Git', icon: '/images/tools/git.webp' },
-    { name: 'Vercel', icon: '/images/tools/vercel.webp' },
-    { name: 'Vertex AI', icon: '/images/tools/vertex-ai.webp' },
-    { name: 'Zapier', icon: '/images/tools/zapier.webp' }
+    { name: 'AWS', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/aws' },
+    { name: 'Claude', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/claude' },
+    { name: 'Docker', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/docker' },
+    { name: 'Figma', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/figma' },
+    { name: 'Gemini', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/gemini' },
+    { name: 'Grok', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/grok' },
+    { name: 'Groq', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/groq' },
+    { name: 'Google Cloud', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/googlecloud' },
+    { name: 'Make', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/make' },
+    { name: 'Meta', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/meta' },
+    { name: 'n8n', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/n8n' },
+    { name: 'Netlify', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/netlify' },
+    { name: 'Notion', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/notion' },
+    { name: 'OpenRouter', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/openrouter' },
+    { name: 'OpenAI', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/openai' },
+    { name: 'PowerBI', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/powerbi' },
+    { name: 'Tableau', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/tableau' },
+    { name: 'Git', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/git' },
+    { name: 'Vercel', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/vercel' },
+    { name: 'Vertex AI', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/vertex-ai' },
+    { name: 'Zapier', icon: 'https://res.cloudinary.com/dp9ej5yfc/image/upload/f_auto,q_auto/aks-automations/tools/zapier' }
 ];
 
 export const PROCESS_CONTENT = {

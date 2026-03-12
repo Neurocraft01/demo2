@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { supabaseAdmin } from '@/lib/supabase';
 
 // ─── SMTP + WhatsApp Contact API ───
 // Sends form data to admin email, auto-reply to sender, and redirects to WhatsApp
@@ -15,6 +16,22 @@ export async function POST(req: NextRequest) {
                 { error: 'Name, email, and message are required.' },
                 { status: 400 }
             );
+        }
+
+        // ─── 0. Save to Database ───
+        try {
+            await supabaseAdmin.from('contact_submissions').insert({
+                name: user_name,
+                email: user_email,
+                phone: phone || null,
+                service: service || null,
+                message: message,
+                status: 'new',
+                ip_address: req.headers.get('x-forwarded-for') || null,
+            });
+        } catch (dbErr) {
+            console.error('Failed to save submission to DB:', dbErr);
+            // Non-blocking, continue to send emails
         }
 
         // ─── SMTP Transporter ───

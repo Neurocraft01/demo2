@@ -2,10 +2,10 @@
 
 import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { CTA_CONTENT } from '@/data/home';
-import { SITE_CONFIG } from '@/data/site';
 
-export default function CtaSection() {
+export default function CtaSection({ data, siteData }: { data: any, siteData: any }) {
+  const { CTA_CONTENT } = data;
+  const { SITE_CONFIG } = siteData;
     const ref = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
 

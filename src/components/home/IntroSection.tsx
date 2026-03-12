@@ -2,9 +2,9 @@
 
 import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { INTRO_CONTENT } from '@/data/home';
 
-export default function IntroSection() {
+export default function IntroSection({ data }: { data: any }) {
+  const { INTRO_CONTENT } = data;
     const ref = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
 

@@ -1,24 +1,16 @@
-'use client';
-
-import { useEffect } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { SERVICES_HERO, SERVICES, PACKAGES, WHY_US, SERVICES_FAQS } from '@/data/services';
-import { SITE_CONFIG } from '@/data/site';
+import Observer from '@/components/Observer';
+import { getSiteContent } from '@/lib/content';
 
-export default function ServicesPage() {
-    useEffect(() => {
-        const obs = new IntersectionObserver(
-            (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } }),
-            { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-        );
-        document.querySelectorAll('.anim').forEach((el) => obs.observe(el));
-        return () => obs.disconnect();
-    }, []);
+export default async function ServicesPage() {
+    const { SERVICES_HERO, SERVICES, PACKAGES, WHY_US, SERVICES_FAQS } = await getSiteContent<any>('services');
+    const { SITE_CONFIG } = await getSiteContent<any>('site');
 
     return (
         <>
+            <Observer />
             <Header />
             <main>
 
@@ -51,21 +43,18 @@ export default function ServicesPage() {
                         <p>End-to-end digital solutions tailored to transform your business</p>
                     </div>
                     <div className="srv-grid">
-                        {SERVICES.map((s) => (
+                        {SERVICES.map((s: any) => (
                             <div key={s.id} className="srv-card anim" id={s.id}>
                                 {s.badge && <div className={`srv-badge${s.badgeClass ? ' ' + s.badgeClass : ''}`}>{s.badge}</div>}
                                 <div className="srv-icon">{s.icon}</div>
                                 <h3>{s.title}</h3>
                                 <p>{s.desc}</p>
                                 <ul className="srv-feats">
-                                    {s.features.map((f) => <li key={f}>{f}</li>)}
+                                    {s.features.map((f: any) => <li key={f}>{f}</li>)}
                                 </ul>
-                                <Link href={`/services/${s.id}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--blue)', fontWeight: 600, fontSize: '14px', textDecoration: 'none', marginTop: '20px', transition: 'gap var(--t)' }}
-                                    onMouseEnter={e => (e.currentTarget.style.gap = '12px')}
-                                    onMouseLeave={e => (e.currentTarget.style.gap = '6px')}
-                                >
+                                <a href={`/services/${s.id}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--blue)', fontWeight: 600, fontSize: '14px', textDecoration: 'none', marginTop: '20px', transition: 'gap var(--t)' }}>
                                     Learn More <i className="bx bx-right-arrow-alt" />
-                                </Link>
+                                </a>
                             </div>
                         ))}
                     </div>
@@ -80,7 +69,7 @@ export default function ServicesPage() {
                             <p>We combine cutting-edge technology with creative precision to deliver digital excellence</p>
                         </div>
                         <div className="features-grid">
-                            {WHY_US.map((f) => (
+                            {WHY_US.map((f: any) => (
                                 <div key={f.title} className="feat-card anim">
                                     <div className="feat-icon">{f.icon}</div>
                                     <h4>{f.title}</h4>
@@ -99,13 +88,13 @@ export default function ServicesPage() {
                         <p>Choose the package that fits your business — or contact us for a custom quote</p>
                     </div>
                     <div className="pkg-grid">
-                        {PACKAGES.map((pkg) => (
+                        {PACKAGES.map((pkg: any) => (
                             <div key={pkg.title} className={`pkg-card anim${pkg.recommended ? ' rec' : ''}`}>
                                 {pkg.recommended && <div className="pkg-badge">⭐ Recommended</div>}
                                 <h3>{pkg.title}</h3>
                                 <p>{pkg.desc}</p>
                                 <ul className="pkg-feats">
-                                    {pkg.features.map((f) => <li key={f}>{f}</li>)}
+                                    {pkg.features.map((f: any) => <li key={f}>{f}</li>)}
                                 </ul>
                                 <Link href="/contact" className="btn btn-primary" style={{ marginTop: '20px', justifyContent: 'center', width: '100%' }}>
                                     Get Started
@@ -124,7 +113,7 @@ export default function ServicesPage() {
                             <p>Everything you need to know before getting started</p>
                         </div>
                         <div className="faq-grid">
-                            {SERVICES_FAQS.map((faq, i) => (
+                            {SERVICES_FAQS.map((faq: any, i: any) => (
                                 <div key={i} className="faq-item anim">
                                     <div className="faq-q">{faq.q}</div>
                                     <div className="faq-a">{faq.a}</div>

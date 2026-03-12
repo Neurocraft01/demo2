@@ -1,9 +1,8 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { PROCESS_CONTENT } from '@/data/home';
-
-export default function ProcessSection() {
+export default function ProcessSection({ data }: { data: any }) {
+  const { PROCESS_CONTENT } = data;
     const ref = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
 
@@ -23,7 +22,7 @@ export default function ProcessSection() {
             </div>
 
             <div className={`process-grid ${visible ? 'in-view' : ''}`}>
-                {PROCESS_CONTENT.steps.map((step, i) => (
+                {PROCESS_CONTENT.steps.map((step: any, i: any) => (
                     <div
                         key={step.num}
                         className="process-step fade-in-up"

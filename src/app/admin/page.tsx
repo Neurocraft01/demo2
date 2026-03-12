@@ -19,12 +19,60 @@ function JsonEditor({ data, onChange }: { data: any, onChange: (newData: any) =>
                         </label>
 
                         {typeof value === 'string' ? (
-                            <textarea
-                                value={value}
-                                onChange={(e) => onChange({ ...data, [key]: e.target.value })}
-                                className="admin-input"
-                                style={{ width: '100%', minHeight: value.length > 60 ? '120px' : '48px', resize: 'vertical' }}
-                            />
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                {(key.toLowerCase().includes('image') || key.toLowerCase().includes('icon') || key.toLowerCase().includes('logo') || key.toLowerCase().includes('avatar') || value.includes('cloudinary') || value.startsWith('/images')) && (
+                                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center', background: 'var(--admin-hover)', padding: '12px', borderRadius: '8px' }}>
+                                        {value && (
+                                            <img src={value} alt="" style={{ width: '48px', height: '48px', objectFit: 'contain', background: 'var(--admin-bg)', borderRadius: '6px', border: '1px solid var(--admin-border)' }} />
+                                        )}
+                                        <div style={{ flex: 1 }}>
+                                            <input 
+                                                type="file" 
+                                                accept="image/*" 
+                                                onChange={async (e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (!file) return;
+                                                    const label = e.target.nextElementSibling as HTMLLabelElement;
+                                                    const originalText = label.innerHTML;
+                                                    label.innerHTML = '⏳ Uploading...';
+                                                    try {
+                                                        const reader = new FileReader();
+                                                        reader.onloadend = async () => {
+                                                            const res = await fetch('/api/admin/upload', {
+                                                                method: 'POST',
+                                                                headers: { 'Content-Type': 'application/json' },
+                                                                body: JSON.stringify({ file: reader.result, folder: 'aks-automations/uploads' })
+                                                            });
+                                                            const responseData = await res.json();
+                                                            if (res.ok && responseData.url) {
+                                                                onChange({ ...data, [key]: responseData.url });
+                                                            } else {
+                                                                alert('Upload Failed: ' + (responseData.error || 'Unknown Error'));
+                                                            }
+                                                            label.innerHTML = originalText;
+                                                        };
+                                                        reader.readAsDataURL(file);
+                                                    } catch (err) {
+                                                        alert('Upload Failed.');
+                                                        label.innerHTML = originalText;
+                                                    }
+                                                }}
+                                                style={{ display: 'none' }} 
+                                                id={`upload-${key}-${Math.random().toString(36).substring(7)}`} 
+                                            />
+                                            <label htmlFor={`upload-${key}-${Math.random().toString(36).substring(7)}`} className="admin-btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', padding: '6px 12px', cursor: 'pointer', borderRadius: '6px' }} onClick={(e) => { const fileInput = e.currentTarget.previousSibling as HTMLInputElement; fileInput.click(); }}>
+                                                <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>cloud_upload</span> Upload to Cloudinary
+                                            </label>
+                                        </div>
+                                    </div>
+                                )}
+                                <textarea
+                                    value={value}
+                                    onChange={(e) => onChange({ ...data, [key]: e.target.value })}
+                                    className="admin-input"
+                                    style={{ width: '100%', minHeight: value.length > 60 ? '120px' : '48px', resize: 'vertical' }}
+                                />
+                            </div>
                         ) : typeof value === 'number' ? (
                             <input
                                 type="number"
@@ -48,16 +96,66 @@ function JsonEditor({ data, onChange }: { data: any, onChange: (newData: any) =>
                                     <div key={idx} style={{ padding: '16px', borderLeft: '3px solid var(--admin-primary)', background: 'var(--admin-card)', position: 'relative', borderRadius: '0 8px 8px 0', borderTop: '1px solid var(--admin-border)', borderRight: '1px solid var(--admin-border)', borderBottom: '1px solid var(--admin-border)' }}>
                                         <div style={{ position: 'absolute', top: '12px', right: '12px', fontSize: '11px', color: 'var(--admin-text-muted)', fontWeight: 'bold' }}>Item {idx + 1}</div>
                                         {typeof item === 'string' ? (
-                                            <textarea
-                                                value={item}
-                                                onChange={e => {
-                                                    const newArr = [...value];
-                                                    newArr[idx] = e.target.value;
-                                                    onChange({ ...data, [key]: newArr });
-                                                }}
-                                                className="admin-input"
-                                                style={{ width: '100%', minHeight: '48px', marginTop: '16px' }}
-                                            />
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
+                                                {(key.toLowerCase().includes('image') || key.toLowerCase().includes('icon') || key.toLowerCase().includes('logo') || key.toLowerCase().includes('avatar') || item.includes('cloudinary') || item.startsWith('/images')) && (
+                                                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center', background: 'var(--admin-hover)', padding: '12px', borderRadius: '8px' }}>
+                                                        {item && (
+                                                            <img src={item} alt="" style={{ width: '48px', height: '48px', objectFit: 'contain', background: 'var(--admin-bg)', borderRadius: '6px', border: '1px solid var(--admin-border)' }} />
+                                                        )}
+                                                        <div style={{ flex: 1 }}>
+                                                            <input 
+                                                                type="file" 
+                                                                accept="image/*" 
+                                                                onChange={async (e) => {
+                                                                    const file = e.target.files?.[0];
+                                                                    if (!file) return;
+                                                                    const label = e.target.nextElementSibling as HTMLLabelElement;
+                                                                    const originalText = label.innerHTML;
+                                                                    label.innerHTML = '⏳ Uploading...';
+                                                                    try {
+                                                                        const reader = new FileReader();
+                                                                        reader.onloadend = async () => {
+                                                                            const res = await fetch('/api/admin/upload', {
+                                                                                method: 'POST',
+                                                                                headers: { 'Content-Type': 'application/json' },
+                                                                                body: JSON.stringify({ file: reader.result, folder: 'aks-automations/uploads' })
+                                                                            });
+                                                                            const responseData = await res.json();
+                                                                            if (res.ok && responseData.url) {
+                                                                                const newArr = [...value];
+                                                                                newArr[idx] = responseData.url;
+                                                                                onChange({ ...data, [key]: newArr });
+                                                                            } else {
+                                                                                alert('Upload Failed: ' + (responseData.error || 'Unknown Error'));
+                                                                            }
+                                                                            label.innerHTML = originalText;
+                                                                        };
+                                                                        reader.readAsDataURL(file);
+                                                                    } catch (err) {
+                                                                        alert('Upload Failed.');
+                                                                        label.innerHTML = originalText;
+                                                                    }
+                                                                }}
+                                                                style={{ display: 'none' }} 
+                                                                id={`upload-${key}-${idx}-${Math.random().toString(36).substring(7)}`} 
+                                                            />
+                                                            <label htmlFor={`upload-${key}-${idx}-${Math.random().toString(36).substring(7)}`} className="admin-btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', padding: '6px 12px', cursor: 'pointer', borderRadius: '6px' }} onClick={(e) => { const fileInput = e.currentTarget.previousSibling as HTMLInputElement; fileInput.click(); }}>
+                                                                <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>cloud_upload</span> Upload to Cloudinary
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                <textarea
+                                                    value={item}
+                                                    onChange={e => {
+                                                        const newArr = [...value];
+                                                        newArr[idx] = e.target.value;
+                                                        onChange({ ...data, [key]: newArr });
+                                                    }}
+                                                    className="admin-input"
+                                                    style={{ width: '100%', minHeight: '48px' }}
+                                                />
+                                            </div>
                                         ) : (
                                             <div style={{ marginTop: '16px' }}>
                                                 <JsonEditor

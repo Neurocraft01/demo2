@@ -1,7 +1,6 @@
 import Image from 'next/image';
-import { TECH_STACK } from '@/data/home';
-
-export default function TechSection() {
+export default function TechSection({ data }: { data: any }) {
+  const { TECH_STACK } = data;
     return (
         <section className="tech-band" style={{ padding: '60px 0', borderTop: 'none' }}>
             <div className="tech-band-label">Technologies That Power Us</div>

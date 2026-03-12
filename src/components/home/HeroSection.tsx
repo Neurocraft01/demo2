@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { HERO_WORDS, HERO_CONTENT } from '@/data/home';
 
-export default function HeroSection() {
+export default function HeroSection({ data }: { data: any }) {
+    const { HERO_WORDS, HERO_CONTENT } = data;
     const [wordIndex, setWordIndex] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
 

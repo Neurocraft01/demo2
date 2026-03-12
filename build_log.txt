@@ -1,0 +1,23 @@
+
+> aks-fast@0.1.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+- Experiments (use with caution):
+  ✓ optimizeCss
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 20.0s
+  Running TypeScript ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/30) ...
+  Generating static pages using 15 workers (7/30) 
+Error occurred prerendering page "/". Read more: https://nextjs.org/docs/messages/prerender-error
+TypeError: Cannot read properties of undefined (reading 'map')
+    at d (C:\Users\Acer\Downloads\aks\port-main\aks-fast\.next\server\chunks\ssr\_eea9eb5a._.js:3:9776) {
+  digest: '597746837'
+}
+Export encountered an error on /page: /, exiting the build.
+  Generating static pages using 15 workers (14/30) 
+⨯ Next.js build worker exited with code: 1 and signal: null

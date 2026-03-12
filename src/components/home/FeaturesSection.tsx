@@ -1,9 +1,8 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { FEATURES_CONTENT } from '@/data/home';
-
-export default function FeaturesSection() {
+export default function FeaturesSection({ data }: { data: any }) {
+  const { FEATURES_CONTENT } = data;
     const ref = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
 
@@ -23,7 +22,7 @@ export default function FeaturesSection() {
             </div>
 
             <div className={`features-grid ${visible ? 'in-view' : ''}`}>
-                {FEATURES_CONTENT.features.map((feature, i) => (
+                {FEATURES_CONTENT.features.map((feature: any, i: any) => (
                     <div
                         key={feature.title}
                         className="feat-card fade-in-up"
