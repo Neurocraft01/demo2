@@ -1,18 +1,17 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
-import { getSiteContent } from '@/lib/content';
 import { SITE_CONFIG } from '@/data/site';
 
-export default async function Footer() {
-    const footerCms = await getSiteContent<any>('footer');
-
-    const logoUrl: string = footerCms.logoUrl || SITE_CONFIG.logo.logoUrl || '';
-    const logoVerticalUrl: string = footerCms.logoVerticalUrl || SITE_CONFIG.logo.logoVerticalUrl || '';
-    const brandDesc: string = footerCms.brandDesc || SITE_CONFIG.footer.brandDesc;
-    const copyright: string = footerCms.copyright || SITE_CONFIG.footer.copyright;
-    const quickLinks: { href: string; label: string }[] = footerCms.quickLinks || SITE_CONFIG.footer.quickLinks;
-    const projectLinks: { href: string; label: string }[] = footerCms.projectLinks || SITE_CONFIG.footer.projectLinks;
-    const contactLinks: { href: string; label: string }[] = footerCms.contactLinks || SITE_CONFIG.footer.contactLinks;
+export default function Footer() {
+    const logoUrl: string = SITE_CONFIG.logo.logoUrl || '';
+    const logoVerticalUrl: string = SITE_CONFIG.logo.logoVerticalUrl || '';
+    const brandDesc: string = SITE_CONFIG.footer.brandDesc;
+    const copyright: string = SITE_CONFIG.footer.copyright;
+    const quickLinks = SITE_CONFIG.footer.quickLinks;
+    const projectLinks = SITE_CONFIG.footer.projectLinks;
+    const contactLinks = SITE_CONFIG.footer.contactLinks;
 
     return (
         <footer className="footer">
