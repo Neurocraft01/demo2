@@ -10,8 +10,8 @@ export const SITE_CONFIG = {
         short: 'AKS',
         full: 'AKSAutomations',
         // Cloudinary URLs — upload via Admin CMS → Site & SEO → logo → logoUrl / logoVerticalUrl
-        logoUrl: '', // horizontal banner logo for navbar (e.g. https://res.cloudinary.com/…)
-        logoVerticalUrl: '', // vertical/stacked logo for footer
+        logoUrl: '/horizontal logo.png', // horizontal banner logo for navbar
+        logoVerticalUrl: '/vertical logo.png', // vertical/stacked logo for footer
     },
     contact: {
         email: 'aksaiautomation@gmail.com',
