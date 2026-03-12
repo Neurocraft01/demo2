@@ -13,6 +13,12 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "AKS - Premium Digital Agency",
   description: "Transforming digital presence with top-tier web development and software solutions.",
+  icons: {
+    icon: [
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    apple: '/favicon.png',
+  },
 };
 
 export default function RootLayout({

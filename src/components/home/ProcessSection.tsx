@@ -4,15 +4,21 @@ import { useRef, useEffect, useState } from 'react';
 export default function ProcessSection({ data }: { data: any }) {
   const { PROCESS_CONTENT } = data;
     const ref = useRef<HTMLDivElement>(null);
+    const [mounted, setMounted] = useState(false);
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted) return;
         const el = ref.current;
         if (!el) return;
         const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.1 });
         obs.observe(el);
         return () => obs.disconnect();
-    }, []);
+    }, [mounted]);
 
     return (
         <section className="process-section" style={{ padding: '100px 5vw' }} ref={ref}>

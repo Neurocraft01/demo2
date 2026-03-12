@@ -579,14 +579,14 @@ function CmsTab({ cmsData, activeSection, editorData, isSaving, selectSection, s
     cmsData: any; activeSection: string; editorData: any; isSaving: boolean;
     selectSection: (s: string) => void; setEditorData: (d: any) => void; handleSaveCMS: () => void;
 }) {
-    const sectionIcons: Record<string, string> = { site: '🌐', home: '🏠', about: 'ℹ️', services: '⚡', projects: '📂', contact: '📧' };
+    const sectionIcons: Record<string, string> = { site: '🌐', home: '🏠', about: 'ℹ️', services: '⚡', projects: '📂', contact: '📧', footer: '🦶' };
 
     return (
         <div className="admin-cms-layout">
             <div className="admin-cms-sidebar">
                 <div style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--admin-text-muted)', textTransform: 'uppercase', marginBottom: '16px', letterSpacing: '1px' }}>Content Sections</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    {['site', 'home', 'about', 'services', 'projects', 'contact'].map(section => (
+                    {['site', 'home', 'about', 'services', 'projects', 'contact', 'footer'].map(section => (
                         <button
                             key={section}
                             onClick={() => selectSection(section)}
@@ -606,7 +606,7 @@ function CmsTab({ cmsData, activeSection, editorData, isSaving, selectSection, s
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
                             <div>
                                 <h2 style={{ fontSize: '24px', margin: '0 0 8px 0', textTransform: 'capitalize' }}>
-                                    {sectionIcons[activeSection]} {activeSection === 'site' ? 'Site & SEO Settings' : `${activeSection} Page`}
+                                    {sectionIcons[activeSection]} {activeSection === 'site' ? 'Site & SEO Settings' : activeSection === 'footer' ? 'Footer & Logo' : `${activeSection} Page`}
                                 </h2>
                                 <p style={{ margin: 0, color: 'var(--admin-text-muted)', fontSize: '14px' }}>Edit content below, then publish to update your site.</p>
                             </div>
@@ -629,6 +629,33 @@ function CmsTab({ cmsData, activeSection, editorData, isSaving, selectSection, s
                                 <div className="admin-card" style={{ padding: '20px', border: '1px solid var(--admin-border)' }}>
                                     <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: 800 }}>Other Settings</h3>
                                     <JsonEditor data={(() => { const { ALL_PROJECTS, TESTIMONIALS, ...rest } = editorData; return rest; })()} onChange={rest => setEditorData({ ...editorData, ...rest })} />
+                                </div>
+                            </div>
+                        ) : activeSection === 'footer' ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                                {/* Logo uploads */}
+                                <div className="admin-card" style={{ padding: '24px', border: '1px solid var(--admin-border)' }}>
+                                    <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', fontWeight: 800 }}>🖼️ Logo Images</h3>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                        <ImageUploadField
+                                            value={editorData.logoUrl || ''}
+                                            onChange={url => setEditorData({ ...editorData, logoUrl: url })}
+                                            label="Navbar / Header Logo (horizontal banner)"
+                                        />
+                                        <ImageUploadField
+                                            value={editorData.logoVerticalUrl || ''}
+                                            onChange={url => setEditorData({ ...editorData, logoVerticalUrl: url })}
+                                            label="Footer Logo (vertical / stacked)"
+                                        />
+                                    </div>
+                                </div>
+                                {/* Footer text content */}
+                                <div className="admin-card" style={{ padding: '24px', border: '1px solid var(--admin-border)' }}>
+                                    <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', fontWeight: 800 }}>📝 Footer Content</h3>
+                                    <JsonEditor
+                                        data={(() => { const { logoUrl, logoVerticalUrl, ...rest } = editorData; return rest; })()}
+                                        onChange={rest => setEditorData({ ...editorData, ...rest })}
+                                    />
                                 </div>
                             </div>
                         ) : (

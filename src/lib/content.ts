@@ -17,6 +17,15 @@ const STATIC_FALLBACKS: Record<string, Record<string, unknown>> = {
     services: { ...servicesData },
     projects: { ...projectsData },
     contact: { ...contactData },
+    footer: {
+        logoUrl: siteData.SITE_CONFIG.logo.logoUrl || '',
+        logoVerticalUrl: siteData.SITE_CONFIG.logo.logoVerticalUrl || '',
+        brandDesc: siteData.SITE_CONFIG.footer.brandDesc,
+        copyright: siteData.SITE_CONFIG.footer.copyright,
+        quickLinks: siteData.SITE_CONFIG.footer.quickLinks,
+        projectLinks: siteData.SITE_CONFIG.footer.projectLinks,
+        contactLinks: siteData.SITE_CONFIG.footer.contactLinks,
+    },
 };
 
 // Path to local JSON overrides file

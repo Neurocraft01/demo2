@@ -1,19 +1,25 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 export default function HeroSection({ data }: { data: any }) {
     const { HERO_WORDS, HERO_CONTENT } = data;
     const [wordIndex, setWordIndex] = useState(0);
+    const [mounted, setMounted] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        // Trigger entrance animation
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted) return;
+        // Trigger entrance animation after mount
         requestAnimationFrame(() => setIsVisible(true));
         const id = setInterval(() => setWordIndex((i) => (i + 1) % HERO_WORDS.length), 2500);
         return () => clearInterval(id);
-    }, []);
+    }, [mounted, HERO_WORDS.length]);
 
     return (
         <section className="hero-section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>

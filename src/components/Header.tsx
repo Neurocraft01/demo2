@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { SITE_CONFIG } from '@/data/site';
 
@@ -41,8 +42,21 @@ export default function Header() {
                 <div className="header-inner">
                     {/* Logo */}
                     <Link href="/" className="logo">
-                        <div className="logo-icon">{SITE_CONFIG.logo.short}</div>
-                        <span className="logo-text">AKS<em>Automations</em></span>
+                        {SITE_CONFIG.logo.logoUrl ? (
+                            <Image
+                                src={SITE_CONFIG.logo.logoUrl}
+                                alt="AKS Automations"
+                                width={160}
+                                height={40}
+                                style={{ objectFit: 'contain', height: '40px', width: 'auto' }}
+                                priority
+                            />
+                        ) : (
+                            <>
+                                <div className="logo-icon">{SITE_CONFIG.logo.short}</div>
+                                <span className="logo-text">AKS<em>Automations</em></span>
+                            </>
+                        )}
                     </Link>
 
                     {/* Desktop Nav */}

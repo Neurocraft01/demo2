@@ -6,15 +6,21 @@ import Link from 'next/link';
 export default function IntroSection({ data }: { data: any }) {
   const { INTRO_CONTENT } = data;
     const ref = useRef<HTMLDivElement>(null);
+    const [mounted, setMounted] = useState(false);
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted) return;
         const el = ref.current;
         if (!el) return;
         const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.15 });
         obs.observe(el);
         return () => obs.disconnect();
-    }, []);
+    }, [mounted]);
 
     return (
         <section className="intro-section" ref={ref}>
