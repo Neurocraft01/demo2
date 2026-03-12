@@ -9,6 +9,9 @@ import FeaturesSection from '@/components/home/FeaturesSection';
 import CtaSection from '@/components/home/CtaSection';
 import { getSiteContent } from '@/lib/content';
 
+// Revalidate every 60 seconds to pick up CMS changes
+export const revalidate = 60;
+
 export default async function HomePage() {
   const homeData = await getSiteContent<any>('home');
   const siteData = await getSiteContent<any>('site');

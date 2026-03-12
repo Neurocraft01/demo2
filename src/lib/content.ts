@@ -98,9 +98,8 @@ export async function saveSiteContent(
     section: string,
     data: Record<string, unknown>,
     updatedBy?: string
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ success: boolean; error?: string; savedTo?: string }> {
     let supabaseError: string | null = null;
-    let localError: string | null = null;
 
     // Try Supabase first
     try {
@@ -117,7 +116,7 @@ export async function saveSiteContent(
 
         if (!error) {
             delete cache[section];
-            return { success: true };
+            return { success: true, savedTo: 'supabase' };
         }
         supabaseError = error.message || 'Supabase upsert failed';
     } catch (err: any) {
@@ -130,16 +129,19 @@ export async function saveSiteContent(
         overrides[section] = data;
         writeLocalOverrides(overrides);
         delete cache[section];
-        return { success: true };
+        // Warn that this won't work in production
+        return { 
+            success: true, 
+            savedTo: 'local',
+            error: `Warning: Saved locally only (Supabase: ${supabaseError}). Changes won't persist in production.`
+        };
     } catch (err: any) {
-        localError = err?.message || 'Local file write failed';
+        // Both failed
+        return {
+            success: false,
+            error: `Supabase: ${supabaseError}. Run supabase-schema-v2.sql in your Supabase SQL Editor.`
+        };
     }
-
-    // Both failed - return detailed error
-    return {
-        success: false,
-        error: `Database: ${supabaseError}. Local fallback: ${localError}`
-    };
 }
 
 /**

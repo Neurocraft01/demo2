@@ -979,10 +979,16 @@ export default function AdminDashboard() {
             const result = await res.json();
 
             if (res.ok) {
-                setMessage('Changes published successfully.');
+                if (result.savedTo === 'supabase') {
+                    setMessage('Saved to database! Website will update within 60 seconds.');
+                } else if (result.savedTo === 'local') {
+                    setMessage('⚠️ Saved locally only. Run supabase-schema-v2.sql for production.');
+                } else {
+                    setMessage('Changes saved.');
+                }
                 loadContent();
             } else {
-                setMessage(`Save Error: ${result.error || 'Unknown error'}. Run supabase-schema-v2.sql in Supabase.`);
+                setMessage(`Save Error: ${result.error || 'Unknown error'}`);
             }
         } catch (err) {
             setMessage('Failed to reach server. Check your connection.');

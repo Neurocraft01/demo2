@@ -3,6 +3,9 @@ import Footer from '@/components/Footer';
 import ContactClient from '@/components/contact/ContactClient';
 import { getSiteContent } from '@/lib/content';
 
+// Revalidate every 60 seconds to pick up CMS changes
+export const revalidate = 60;
+
 export default async function ContactPage() {
     const data = await getSiteContent<any>('contact');
     const { SITE_CONFIG } = await getSiteContent<any>('site');

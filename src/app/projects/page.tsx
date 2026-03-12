@@ -5,6 +5,9 @@ import Observer from '@/components/Observer';
 import { getSiteContent } from '@/lib/content';
 import ProjectsClient from '@/components/projects/ProjectsClient';
 
+// Revalidate every 60 seconds to pick up CMS changes
+export const revalidate = 60;
+
 export default async function ProjectsPage() {
     const data = await getSiteContent<any>('projects');
     const { SITE_CONFIG } = await getSiteContent<any>('site');

@@ -4,6 +4,9 @@ import Footer from '@/components/Footer';
 import Observer from '@/components/Observer';
 import { getSiteContent } from '@/lib/content';
 
+// Revalidate every 60 seconds to pick up CMS changes
+export const revalidate = 60;
+
 export default async function ServicesPage() {
     const { SERVICES_HERO, SERVICES, PACKAGES, WHY_US, SERVICES_FAQS } = await getSiteContent<any>('services');
     const { SITE_CONFIG } = await getSiteContent<any>('site');

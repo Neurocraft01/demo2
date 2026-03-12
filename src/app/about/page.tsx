@@ -4,6 +4,9 @@ import Footer from '@/components/Footer';
 import Observer from '@/components/Observer';
 import { getSiteContent } from '@/lib/content';
 
+// Revalidate every 60 seconds to pick up CMS changes
+export const revalidate = 60;
+
 export default async function AboutPage() {
     const { ABOUT_HERO, TEAM, VALUES, ABOUT_STATS, MILESTONES, STORY, LOCATION, ABOUT_MISSION } = await getSiteContent<any>('about');
     const { SITE_CONFIG } = await getSiteContent<any>('site');

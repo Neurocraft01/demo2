@@ -53,7 +53,11 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({
             success: true,
-            message: `Section "${section}" updated securely in Database.`,
+            savedTo: result.savedTo,
+            message: result.savedTo === 'supabase' 
+                ? `Section "${section}" saved to database.`
+                : `Section "${section}" saved locally (dev only).`,
+            warning: result.error, // Contains warning if saved locally
         });
     } catch (err) {
         console.error('Error saving content:', err);
