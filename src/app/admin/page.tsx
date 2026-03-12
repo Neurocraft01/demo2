@@ -976,14 +976,16 @@ export default function AdminDashboard() {
                 }),
             });
 
+            const result = await res.json();
+
             if (res.ok) {
-                setMessage('Changes published directly to the Next.js static files.');
+                setMessage('Changes published successfully.');
                 loadContent();
             } else {
-                setMessage('Database Error while saving content.');
+                setMessage(`Save Error: ${result.error || 'Unknown error'}. Run supabase-schema-v2.sql in Supabase.`);
             }
         } catch (err) {
-            setMessage('Failed to reach Node.js server.');
+            setMessage('Failed to reach server. Check your connection.');
         } finally {
             setIsSaving(false);
             setTimeout(() => setMessage(''), 4000);

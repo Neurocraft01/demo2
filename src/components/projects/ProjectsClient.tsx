@@ -73,9 +73,40 @@ export default function ProjectsClient({ data, siteData }: { data: any, siteData
                                         )}
                                     </div>
                                     {project.link !== '#' && (
-                                        <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#fff', textDecoration: 'none', fontSize: '14px', fontWeight: 600, padding: '8px 16px', borderRadius: '100px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                        <a 
+                                            href={project.link} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer" 
+                                            className="view-live-btn"
+                                            style={{ 
+                                                display: 'flex', 
+                                                alignItems: 'center', 
+                                                gap: '8px', 
+                                                color: '#fff', 
+                                                textDecoration: 'none', 
+                                                fontSize: '14px', 
+                                                fontWeight: 700, 
+                                                padding: '10px 20px', 
+                                                borderRadius: '100px', 
+                                                background: `linear-gradient(135deg, ${accent}, ${accent}cc)`,
+                                                boxShadow: `0 4px 20px ${accent}44, 0 0 0 1px ${accent}66`,
+                                                transition: 'all 0.3s ease',
+                                                letterSpacing: '0.3px'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                                                e.currentTarget.style.boxShadow = `0 8px 30px ${accent}55, 0 0 0 1px ${accent}88`;
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                                                e.currentTarget.style.boxShadow = `0 4px 20px ${accent}44, 0 0 0 1px ${accent}66`;
+                                            }}
+                                        >
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+                                                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#4ade80', boxShadow: '0 0 8px #4ade80', animation: 'pulse 2s infinite' }} />
+                                            </span>
                                             View Live
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17L17 7" /><path d="M7 7h10v10" /></svg>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17L17 7" /><path d="M7 7h10v10" /></svg>
                                         </a>
                                     )}
                                 </div>

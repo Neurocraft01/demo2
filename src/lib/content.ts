@@ -99,6 +99,9 @@ export async function saveSiteContent(
     data: Record<string, unknown>,
     updatedBy?: string
 ): Promise<{ success: boolean; error?: string }> {
+    let supabaseError: string | null = null;
+    let localError: string | null = null;
+
     // Try Supabase first
     try {
         const { error } = await supabaseAdmin
@@ -116,11 +119,12 @@ export async function saveSiteContent(
             delete cache[section];
             return { success: true };
         }
-    } catch {
-        // Supabase not available — fall through to local save
+        supabaseError = error.message || 'Supabase upsert failed';
+    } catch (err: any) {
+        supabaseError = err?.message || 'Supabase connection failed';
     }
 
-    // Fallback: save to local JSON file
+    // Fallback: save to local JSON file (only works in development)
     try {
         const overrides = readLocalOverrides();
         overrides[section] = data;
@@ -128,8 +132,14 @@ export async function saveSiteContent(
         delete cache[section];
         return { success: true };
     } catch (err: any) {
-        return { success: false, error: err.message || 'Save failed' };
+        localError = err?.message || 'Local file write failed';
     }
+
+    // Both failed - return detailed error
+    return {
+        success: false,
+        error: `Database: ${supabaseError}. Local fallback: ${localError}`
+    };
 }
 
 /**
