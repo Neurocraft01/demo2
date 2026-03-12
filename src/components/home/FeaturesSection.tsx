@@ -21,7 +21,7 @@ export default function FeaturesSection({ data }: { data: any }) {
                 <p style={{ color: 'var(--ink-3)', fontSize: '18px', marginTop: '16px' }}>{FEATURES_CONTENT.subtitle}</p>
             </div>
 
-            <div className={`features-grid ${visible ? 'in-view' : ''}`}>
+            <div className={`features-grid${visible ? ' in-view' : ''}`}>
                 {FEATURES_CONTENT.features.map((feature: any, i: any) => (
                     <div
                         key={feature.title}

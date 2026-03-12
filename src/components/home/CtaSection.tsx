@@ -19,7 +19,7 @@ export default function CtaSection({ data, siteData }: { data: any, siteData: an
 
     return (
         <section className="cta-band" style={{ padding: '120px 5vw' }} ref={ref}>
-            <div className={`cta-band-inner ${visible ? 'cta-visible' : ''}`}>
+            <div className={`cta-band-inner${visible ? ' cta-visible' : ''}`}>
                 <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', lineHeight: 1.1 }}>
                     {CTA_CONTENT.title}
                 </h2>

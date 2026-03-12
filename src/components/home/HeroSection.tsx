@@ -18,7 +18,7 @@ export default function HeroSection({ data }: { data: any }) {
     return (
         <section className="hero-section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
             <div
-                className={`hero-content-wrapper ${isVisible ? 'hero-visible' : ''}`}
+                className={`hero-content-wrapper${isVisible ? ' hero-visible' : ''}`}
                 style={{ textAlign: 'center', zIndex: 10, padding: '0 20px', width: '100%' }}
             >
                 <div

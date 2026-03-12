@@ -125,28 +125,6 @@ export default async function ProjectsPage() {
                     color: transparent;
                 }
 
-                .mock-browser {
-                    margin-top: auto;
-                    background: rgba(10, 10, 15, 0.8);
-                    border: 1px solid rgba(255,255,255,0.1);
-                    border-radius: 12px 12px 0 0;
-                    overflow: hidden;
-                    box-shadow: 0 -20px 40px rgba(0,0,0,0.5);
-                    transform: translateY(20px);
-                    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-                }
-                .bento-card:hover .mock-browser {
-                    transform: translateY(0);
-                }
-                .browser-header {
-                    padding: 12px 16px;
-                    background: rgba(255,255,255,0.03);
-                    border-bottom: 1px solid rgba(255,255,255,0.05);
-                    display: flex;
-                    gap: 8px;
-                }
-                .browser-dot { width: 10px; height: 10px; border-radius: 50%; }
-
                 /* Lines animation in hero */
                 .grid-lines {
                     position: absolute;
@@ -189,7 +167,7 @@ export default async function ProjectsPage() {
                     }} />
 
                     <div style={{ position: 'relative', zIndex: 1, maxWidth: '800px' }}>
-                        <div className="reveal-anim" style={{
+                        <div style={{
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '8px',
@@ -206,7 +184,7 @@ export default async function ProjectsPage() {
                             <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#6366f1', boxShadow: '0 0 10px #6366f1' }} />
                             The Masterpieces
                         </div>
-                        <h1 className="reveal-anim gradient-text-hero" style={{
+                        <h1 className="gradient-text-hero" style={{
                             fontSize: 'clamp(3rem, 6vw, 5.5rem)',
                             fontWeight: 800,
                             lineHeight: 1.1,
@@ -215,7 +193,7 @@ export default async function ProjectsPage() {
                         }}>
                             Engineered for Impact.<br />Designed to Surprise.
                         </h1>
-                        <p className="reveal-anim" style={{
+                        <p style={{
                             fontSize: 'clamp(1.1rem, 2vw, 1.35rem)',
                             color: 'rgba(255,255,255,0.6)',
                             lineHeight: 1.6,

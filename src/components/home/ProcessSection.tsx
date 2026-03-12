@@ -21,7 +21,7 @@ export default function ProcessSection({ data }: { data: any }) {
                 <p style={{ color: 'var(--ink-3)', fontSize: '18px', marginTop: '16px' }}>{PROCESS_CONTENT.subtitle}</p>
             </div>
 
-            <div className={`process-grid ${visible ? 'in-view' : ''}`}>
+            <div className={`process-grid${visible ? ' in-view' : ''}`}>
                 {PROCESS_CONTENT.steps.map((step: any, i: any) => (
                     <div
                         key={step.num}

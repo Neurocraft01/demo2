@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 
 // Recursive JSON Form Editor Component
@@ -376,6 +376,269 @@ function NotificationContacts() {
                     </div>
                 </div>
             ))}
+        </div>
+    );
+}
+
+// ─── Image Upload Helper ─────────────────────────────────────────────────────
+function ImageUploadField({ value, onChange, label }: { value: string; onChange: (url: string) => void; label?: string }) {
+    const [uploading, setUploading] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const handleUpload = async (file: File) => {
+        setUploading(true);
+        try {
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+                const res = await fetch('/api/admin/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ file: reader.result, folder: 'aks-automations/uploads' })
+                });
+                const data = await res.json();
+                if (res.ok && data.url) {
+                    onChange(data.url);
+                } else {
+                    alert('Upload failed: ' + (data.error || 'Unknown error'));
+                }
+                setUploading(false);
+            };
+            reader.readAsDataURL(file);
+        } catch {
+            alert('Upload failed');
+            setUploading(false);
+        }
+    };
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {label && <label style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--admin-text-muted)' }}>{label}</label>}
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <div style={{ width: '56px', height: '56px', borderRadius: '12px', border: '2px dashed var(--admin-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', background: 'var(--admin-hover)', flexShrink: 0, cursor: 'pointer' }} onClick={() => inputRef.current?.click()}>
+                    {value ? (
+                        <img src={value} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                    ) : (
+                        <span style={{ fontSize: '24px', opacity: 0.3 }}>+</span>
+                    )}
+                </div>
+                <div style={{ flex: 1, display: 'flex', gap: '8px' }}>
+                    <input value={value} onChange={e => onChange(e.target.value)} placeholder="Image URL or upload" className="admin-input" style={{ flex: 1 }} />
+                    <input ref={inputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) handleUpload(f); }} />
+                    <button onClick={() => inputRef.current?.click()} disabled={uploading} className="admin-btn-outline" style={{ padding: '8px 14px', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, fontSize: '12px', whiteSpace: 'nowrap' }}>
+                        {uploading ? 'Uploading...' : 'Upload'}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ─── Projects Editor Component ──────────────────────────────────────────────
+function ProjectsEditor({ projects, onChange }: { projects: any[]; onChange: (p: any[]) => void }) {
+    const [editIdx, setEditIdx] = useState<number | null>(null);
+    const CATEGORY_OPTIONS = ['landing', 'website', 'portfolio', 'data-analysis', 'visualization', 'chatbot', 'automation'];
+
+    const addProject = () => {
+        onChange([...projects, { title: '', gradientPart: '', desc: '', link: '#', tags: [], category: 'website', logo: '' }]);
+        setEditIdx(projects.length);
+    };
+
+    const updateProject = (idx: number, field: string, value: any) => {
+        const updated = [...projects];
+        updated[idx] = { ...updated[idx], [field]: value };
+        onChange(updated);
+    };
+
+    const removeProject = (idx: number) => {
+        if (!confirm('Remove this project?')) return;
+        onChange(projects.filter((_, i) => i !== idx));
+        setEditIdx(null);
+    };
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 800 }}>Portfolio Projects ({projects.length})</h3>
+                <button onClick={addProject} className="admin-btn" style={{ padding: '8px 16px', fontSize: '13px' }}>+ Add Project</button>
+            </div>
+
+            {projects.map((p: any, i: number) => (
+                <div key={i} className="admin-card" style={{ padding: '16px', border: editIdx === i ? '2px solid var(--admin-primary)' : '1px solid var(--admin-border)' }}>
+                    {editIdx === i ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                                <div>
+                                    <label style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--admin-text-muted)', display: 'block', marginBottom: '4px' }}>Project Title</label>
+                                    <input value={p.title} onChange={e => updateProject(i, 'title', e.target.value)} className="admin-input" placeholder="e.g. YOMA Company Portfolio" />
+                                </div>
+                                <div>
+                                    <label style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--admin-text-muted)', display: 'block', marginBottom: '4px' }}>Gradient Highlight Word</label>
+                                    <input value={p.gradientPart} onChange={e => updateProject(i, 'gradientPart', e.target.value)} className="admin-input" placeholder="e.g. Portfolio" />
+                                </div>
+                            </div>
+                            <div>
+                                <label style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--admin-text-muted)', display: 'block', marginBottom: '4px' }}>Description</label>
+                                <textarea value={p.desc} onChange={e => updateProject(i, 'desc', e.target.value)} className="admin-input" style={{ minHeight: '80px', resize: 'vertical' }} placeholder="Project description..." />
+                            </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                                <div>
+                                    <label style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--admin-text-muted)', display: 'block', marginBottom: '4px' }}>Live Link</label>
+                                    <input value={p.link} onChange={e => updateProject(i, 'link', e.target.value)} className="admin-input" placeholder="https://example.com or #" />
+                                </div>
+                                <div>
+                                    <label style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--admin-text-muted)', display: 'block', marginBottom: '4px' }}>Category</label>
+                                    <select value={p.category} onChange={e => updateProject(i, 'category', e.target.value)} className="admin-input" style={{ cursor: 'pointer' }}>
+                                        {CATEGORY_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--admin-text-muted)', display: 'block', marginBottom: '4px' }}>Tags (comma separated)</label>
+                                <input value={(p.tags || []).join(', ')} onChange={e => updateProject(i, 'tags', e.target.value.split(',').map((t: string) => t.trim()).filter(Boolean))} className="admin-input" placeholder="React, Next.js, API" />
+                            </div>
+                            <ImageUploadField value={p.logo || ''} onChange={url => updateProject(i, 'logo', url)} label="Company Logo" />
+                            <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                                <button onClick={() => removeProject(i)} className="admin-btn-outline" style={{ padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, fontSize: '12px', color: 'var(--admin-danger)' }}>Delete</button>
+                                <button onClick={() => setEditIdx(null)} className="admin-btn" style={{ padding: '8px 20px', fontSize: '13px' }}>Done</button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', cursor: 'pointer' }} onClick={() => setEditIdx(i)}>
+                            <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'var(--admin-hover)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0, border: '1px solid var(--admin-border)' }}>
+                                {p.logo ? <img src={p.logo} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /> : <span style={{ fontWeight: 800, fontSize: '16px', color: 'var(--admin-primary)' }}>{(p.title || '?').charAt(0)}</span>}
+                            </div>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                                <div style={{ fontWeight: 700, fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.title || 'Untitled Project'}</div>
+                                <div style={{ fontSize: '12px', color: 'var(--admin-text-muted)', marginTop: '2px' }}>{p.category} • {(p.tags || []).length} tags</div>
+                            </div>
+                            <span style={{ fontSize: '12px', color: 'var(--admin-text-muted)', fontWeight: 600 }}>Edit →</span>
+                        </div>
+                    )}
+                </div>
+            ))}
+        </div>
+    );
+}
+
+// ─── Testimonials Editor Component ──────────────────────────────────────────
+function TestimonialsEditor({ testimonials, onChange }: { testimonials: any[]; onChange: (t: any[]) => void }) {
+    const addTestimonial = () => {
+        onChange([...testimonials, { name: '', role: '', text: '', avatar: '' }]);
+    };
+
+    const update = (idx: number, field: string, value: string) => {
+        const updated = [...testimonials];
+        updated[idx] = { ...updated[idx], [field]: value };
+        onChange(updated);
+    };
+
+    const remove = (idx: number) => {
+        if (!confirm('Remove this testimonial?')) return;
+        onChange(testimonials.filter((_, i) => i !== idx));
+    };
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 800 }}>Testimonials ({testimonials.length})</h3>
+                <button onClick={addTestimonial} className="admin-btn" style={{ padding: '8px 16px', fontSize: '13px' }}>+ Add Testimonial</button>
+            </div>
+
+            {testimonials.map((t: any, i: number) => (
+                <div key={i} className="admin-card" style={{ padding: '20px', border: '1px solid var(--admin-border)' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                            <div>
+                                <label style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--admin-text-muted)', display: 'block', marginBottom: '4px' }}>Name</label>
+                                <input value={t.name} onChange={e => update(i, 'name', e.target.value)} className="admin-input" placeholder="John Doe" />
+                            </div>
+                            <div>
+                                <label style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--admin-text-muted)', display: 'block', marginBottom: '4px' }}>Role / Company</label>
+                                <input value={t.role} onChange={e => update(i, 'role', e.target.value)} className="admin-input" placeholder="CEO, TechCorp" />
+                            </div>
+                        </div>
+                        <div>
+                            <label style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--admin-text-muted)', display: 'block', marginBottom: '4px' }}>Testimonial Text</label>
+                            <textarea value={t.text} onChange={e => update(i, 'text', e.target.value)} className="admin-input" style={{ minHeight: '80px', resize: 'vertical' }} placeholder="What the client said..." />
+                        </div>
+                        <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end' }}>
+                            <div style={{ flex: 1 }}>
+                                <ImageUploadField value={t.avatar || ''} onChange={url => update(i, 'avatar', url)} label="Avatar (optional)" />
+                            </div>
+                            <button onClick={() => remove(i)} className="admin-btn-outline" style={{ padding: '8px 14px', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, fontSize: '12px', color: 'var(--admin-danger)', flexShrink: 0 }}>Remove</button>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+// ─── CMS Tab Component ──────────────────────────────────────────────────────
+function CmsTab({ cmsData, activeSection, editorData, isSaving, selectSection, setEditorData, handleSaveCMS }: {
+    cmsData: any; activeSection: string; editorData: any; isSaving: boolean;
+    selectSection: (s: string) => void; setEditorData: (d: any) => void; handleSaveCMS: () => void;
+}) {
+    const sectionIcons: Record<string, string> = { site: '🌐', home: '🏠', about: 'ℹ️', services: '⚡', projects: '📂', contact: '📧' };
+
+    return (
+        <div className="admin-cms-layout">
+            <div className="admin-cms-sidebar">
+                <div style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--admin-text-muted)', textTransform: 'uppercase', marginBottom: '16px', letterSpacing: '1px' }}>Content Sections</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    {['site', 'home', 'about', 'services', 'projects', 'contact'].map(section => (
+                        <button
+                            key={section}
+                            onClick={() => selectSection(section)}
+                            className={`admin-nav-item${activeSection === section ? ' active' : ''}`}
+                            style={{ border: '1px solid var(--admin-border)', background: activeSection === section ? 'var(--admin-primary-light)' : 'var(--admin-card)', display: 'flex', alignItems: 'center', gap: '8px' }}
+                        >
+                            <span>{sectionIcons[section]}</span>
+                            <span style={{ textTransform: 'capitalize' }}>{section === 'site' ? 'Site & SEO' : section}</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            <div className="admin-cms-editor">
+                {activeSection && editorData ? (
+                    <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+                            <div>
+                                <h2 style={{ fontSize: '24px', margin: '0 0 8px 0', textTransform: 'capitalize' }}>
+                                    {sectionIcons[activeSection]} {activeSection === 'site' ? 'Site & SEO Settings' : `${activeSection} Page`}
+                                </h2>
+                                <p style={{ margin: 0, color: 'var(--admin-text-muted)', fontSize: '14px' }}>Edit content below, then publish to update your site.</p>
+                            </div>
+                            <button onClick={handleSaveCMS} disabled={isSaving} className="admin-btn">
+                                {isSaving ? 'Saving...' : 'Publish Changes'}
+                            </button>
+                        </div>
+
+                        {/* Projects section gets dedicated editors */}
+                        {activeSection === 'projects' ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                                <ProjectsEditor
+                                    projects={editorData.ALL_PROJECTS || []}
+                                    onChange={p => setEditorData({ ...editorData, ALL_PROJECTS: p })}
+                                />
+                                <TestimonialsEditor
+                                    testimonials={editorData.TESTIMONIALS || []}
+                                    onChange={t => setEditorData({ ...editorData, TESTIMONIALS: t })}
+                                />
+                                <div className="admin-card" style={{ padding: '20px', border: '1px solid var(--admin-border)' }}>
+                                    <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: 800 }}>Other Settings</h3>
+                                    <JsonEditor data={(() => { const { ALL_PROJECTS, TESTIMONIALS, ...rest } = editorData; return rest; })()} onChange={rest => setEditorData({ ...editorData, ...rest })} />
+                                </div>
+                            </div>
+                        ) : (
+                            <JsonEditor data={editorData} onChange={setEditorData} />
+                        )}
+                    </div>
+                ) : (
+                    <div style={{ padding: '40px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>Loading editor...</div>
+                )}
+            </div>
         </div>
     );
 }
@@ -958,53 +1221,15 @@ export default function AdminDashboard() {
 
                     {/* TAB: CMS */}
                     {activeTab === 'cms' && (
-                        <div className="admin-cms-layout">
-                            <div className="admin-cms-sidebar">
-                                <div style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--admin-text-muted)', textTransform: 'uppercase', marginBottom: '16px', letterSpacing: '1px' }}>Static Endpoints</div>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    {cmsData?.sections && ['site', 'home', 'about', 'services', 'projects', 'contact'].map(section => {
-                                        const hasOverrides = !!cmsData.sections[section]?.override;
-                                        return (
-                                            <button
-                                                key={section}
-                                                onClick={() => selectSection(section)}
-                                                className={`admin-nav-item ${activeSection === section ? 'active' : ''}`}
-                                                style={{ border: '1px solid var(--admin-border)', background: activeSection === section ? 'var(--admin-primary-light)' : 'var(--admin-card)' }}
-                                            >
-                                                <span style={{ textTransform: 'capitalize' }}>{section} {section === 'site' ? '(SEO)' : 'Page'}</span>
-                                                {hasOverrides && <div style={{ marginLeft: 'auto', width: '8px', height: '8px', borderRadius: '50%', background: 'var(--admin-primary)' }} />}
-                                            </button>
-                                        )
-                                    })}
-                                </div>
-
-                                <div style={{ marginTop: '32px', padding: '16px', background: 'var(--admin-card)', borderRadius: '12px', border: '1px solid var(--admin-border)' }}>
-                                    <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>Pro Tip</div>
-                                    <div style={{ fontSize: '12px', color: 'var(--admin-text-muted)', lineHeight: '1.6' }}>Clicking "Publish" writes your code directly to Next.js data constants in the filesystem for a true headless architecture.</div>
-                                </div>
-                            </div>
-
-                            <div className="admin-cms-editor">
-                                {activeSection && editorData ? (
-                                    <div>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
-                                            <div>
-                                                <h2 style={{ fontSize: '24px', margin: '0 0 8px 0', textTransform: 'capitalize' }}>Editing {activeSection}</h2>
-                                                <p style={{ margin: 0, color: 'var(--admin-text-muted)', fontSize: '14px' }}>Make sure to verify your string lengths for SEO.</p>
-                                            </div>
-                                            <button onClick={handleSaveCMS} disabled={isSaving} className="admin-btn">
-                                                {isSaving ? 'Compiling...' : 'Publish Static Site'}
-                                            </button>
-                                        </div>
-
-                                        <JsonEditor data={editorData} onChange={setEditorData} />
-
-                                    </div>
-                                ) : (
-                                    <div>Loading Editor...</div>
-                                )}
-                            </div>
-                        </div>
+                        <CmsTab
+                            cmsData={cmsData}
+                            activeSection={activeSection}
+                            editorData={editorData}
+                            isSaving={isSaving}
+                            selectSection={selectSection}
+                            setEditorData={setEditorData}
+                            handleSaveCMS={handleSaveCMS}
+                        />
                     )}
 
                     {/* TAB: VISITORS */}

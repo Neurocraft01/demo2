@@ -1,4 +1,6 @@
 import { supabaseAdmin } from './supabase';
+import fs from 'fs';
+import path from 'path';
 
 // ─── Static Fallback Data ────────────────────────────────────────────────────
 import * as siteData from '@/data/site';
@@ -9,13 +11,29 @@ import * as projectsData from '@/data/projects';
 import * as contactData from '@/data/contact';
 
 const STATIC_FALLBACKS: Record<string, Record<string, unknown>> = {
-    site: siteData,
-    home: homeData,
-    about: aboutData,
-    services: servicesData,
-    projects: projectsData,
-    contact: contactData,
+    site: { ...siteData },
+    home: { ...homeData },
+    about: { ...aboutData },
+    services: { ...servicesData },
+    projects: { ...projectsData },
+    contact: { ...contactData },
 };
+
+// Path to local JSON overrides file
+const OVERRIDES_PATH = path.join(process.cwd(), 'src', 'data', 'cms-overrides.json');
+
+function readLocalOverrides(): Record<string, Record<string, unknown>> {
+    try {
+        const raw = fs.readFileSync(OVERRIDES_PATH, 'utf-8');
+        return JSON.parse(raw);
+    } catch {
+        return {};
+    }
+}
+
+function writeLocalOverrides(overrides: Record<string, Record<string, unknown>>): void {
+    fs.writeFileSync(OVERRIDES_PATH, JSON.stringify(overrides, null, 2), 'utf-8');
+}
 
 // In-memory cache with TTL
 const cache: Record<string, { data: Record<string, unknown>; expires: number }> = {};
@@ -23,8 +41,7 @@ const CACHE_TTL = 60_000; // 1 minute
 
 /**
  * Fetch site content for a section.
- * Reads from Supabase first; falls back to static data if not found.
- * Caches in memory for 60 seconds for performance.
+ * Priority: cache → Supabase → local JSON overrides → static data.
  */
 export async function getSiteContent<T = Record<string, unknown>>(
     section: string
@@ -35,6 +52,7 @@ export async function getSiteContent<T = Record<string, unknown>>(
         return cached.data as T;
     }
 
+    // Try Supabase
     try {
         const { data, error } = await supabaseAdmin
             .from('site_content')
@@ -43,12 +61,18 @@ export async function getSiteContent<T = Record<string, unknown>>(
             .single();
 
         if (!error && data?.data) {
-            // Cache the result
             cache[section] = { data: data.data, expires: Date.now() + CACHE_TTL };
             return data.data as T;
         }
     } catch {
-        // Supabase not available — fall back silently
+        // Supabase not available — fall through
+    }
+
+    // Try local JSON overrides
+    const overrides = readLocalOverrides();
+    if (overrides[section]) {
+        cache[section] = { data: overrides[section], expires: Date.now() + CACHE_TTL };
+        return overrides[section] as T;
     }
 
     // Fallback to static data
@@ -59,13 +83,14 @@ export async function getSiteContent<T = Record<string, unknown>>(
 
 /**
  * Save site content for a section.
- * Upserts data into Supabase and invalidates cache.
+ * Tries Supabase first; falls back to local JSON file.
  */
 export async function saveSiteContent(
     section: string,
     data: Record<string, unknown>,
     updatedBy?: string
 ): Promise<{ success: boolean; error?: string }> {
+    // Try Supabase first
     try {
         const { error } = await supabaseAdmin
             .from('site_content')
@@ -78,11 +103,19 @@ export async function saveSiteContent(
                 { onConflict: 'section' }
             );
 
-        if (error) {
-            return { success: false, error: error.message };
+        if (!error) {
+            delete cache[section];
+            return { success: true };
         }
+    } catch {
+        // Supabase not available — fall through to local save
+    }
 
-        // Invalidate cache
+    // Fallback: save to local JSON file
+    try {
+        const overrides = readLocalOverrides();
+        overrides[section] = data;
+        writeLocalOverrides(overrides);
         delete cache[section];
         return { success: true };
     } catch (err: any) {

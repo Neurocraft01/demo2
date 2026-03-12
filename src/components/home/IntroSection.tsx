@@ -18,7 +18,7 @@ export default function IntroSection({ data }: { data: any }) {
 
     return (
         <section className="intro-section" ref={ref}>
-            <div className={`intro-grid ${visible ? 'in-view' : ''}`}>
+            <div className={`intro-grid${visible ? ' in-view' : ''}`}>
                 <div className="intro-headline fade-in-left">
                     {INTRO_CONTENT.headline.before}
                     <strong style={{ fontWeight: 700 }}>{INTRO_CONTENT.headline.bold1}</strong>
