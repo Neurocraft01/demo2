@@ -35,6 +35,18 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Google tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-F6N1V9MJXY"></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-F6N1V9MJXY');
+          `
+        }} />
+
         {/* Theme init — must run before paint to avoid flash */}
         <script dangerouslySetInnerHTML={{
           __html: `(function(){try{var t=localStorage.getItem('aks-theme');if(!t){t='dark';localStorage.setItem('aks-theme','dark')}document.documentElement.setAttribute('data-theme',t)}catch(e){}})();`

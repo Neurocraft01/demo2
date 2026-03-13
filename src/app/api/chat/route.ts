@@ -40,22 +40,26 @@ export async function POST(req: Request) {
 
         // ─── OFFLINE KEYWORD FALLBACK (If no OpenAI Key is provided) ───
         const lastMsg = messages[messages.length - 1].content.toLowerCase();
-        let reply = "Thanks for your message! To enable full AI capabilities, please add an OPENAI_API_KEY to the server. ";
+        let reply = "";
 
         // Use the dynamically fetched siteData to make offline responses smarter
         const projectsData = (siteData.projects as any)?.PROJECTS || [];
         const servicesData = (siteData.services as any)?.SERVICES || [];
         
-        if (lastMsg.includes('service') || lastMsg.includes('do you do') || lastMsg.includes('offer')) {
+        if (lastMsg.includes('hi') || lastMsg.includes('hello') || lastMsg.includes('hey')) {
+            reply = `Hello there! I'm the AKS assistant. I can help you with information about our Services, Projects, or help you get in touch with our team. What can I assist you with today?`;
+        } else if (lastMsg.includes('service') || lastMsg.includes('do you do') || lastMsg.includes('offer')) {
             const serviceNames = servicesData.map((s: any) => s.title).join(', ');
-            reply = `We provide a variety of services including: ${serviceNames || 'Web Development, AI Automations, and Data Engineering'}. How can we help?`;
-        } else if (lastMsg.includes('contact') || lastMsg.includes('reach')) {
-            reply = `You can reach us through our contact page or book a Calendly call on our site!`;
-        } else if (lastMsg.includes('project') || lastMsg.includes('portfolio') || lastMsg.includes('built')) {
+            reply = `We provide a variety of top-tier services including: ${serviceNames || 'Web Development, AI Automations, and Data Engineering'}. Would you like more details on any of these?`;
+        } else if (lastMsg.includes('contact') || lastMsg.includes('reach') || lastMsg.includes('email') || lastMsg.includes('call')) {
+            reply = `You can easily reach us by filling out the form on our Contact page, or you can book a free consultation call directly via our Calendly link on the site!`;
+        } else if (lastMsg.includes('project') || lastMsg.includes('portfolio') || lastMsg.includes('built') || lastMsg.includes('work')) {
             const projectNames = projectsData.slice(0, 3).map((p: any) => p.title).join(', ');
-            reply = `We've built numerous platforms! Some recent ones include: ${projectNames || 'corporate portfolios and automation bots'}. Check out our Projects page for more!`;
+            reply = `We've built numerous platforms for clients worldwide! Some of our recent favorites include: ${projectNames || 'corporate portfolios and robust automation bots'}. Feel free to check out our Projects page for detailed case studies.`;
+        } else if (lastMsg.includes('price') || lastMsg.includes('cost') || lastMsg.includes('quote')) {
+            reply = `Our pricing is custom-tailored to the specific needs and scale of your project. We'd love to give you an accurate quote! Please fill out our contact form or book a quick call with our team so we can discuss the details.`;
         } else {
-            reply = `I am currently in offline mode (no API key). You can ask me about our "services", "projects", or "contact" info!`;
+            reply = `That's a great question! However, I am a specialized virtual assistant and might not have the full context for that. \n\nOur human support team would be happy to help you—please feel free to fill out the contact form on our website or book a direct call with us, and we will get back to you shortly!`;
         }
 
         // Simulate network delay

@@ -128,7 +128,8 @@ export default function Chatbot() {
                                 color: msg.role === 'user' ? 'white' : 'var(--ink)',
                                 fontSize: '14px',
                                 lineHeight: 1.5,
-                                border: msg.role === 'assistant' ? '1px solid var(--border)' : 'none'
+                                border: msg.role === 'assistant' ? '1px solid var(--border)' : 'none',
+                                whiteSpace: 'pre-wrap'
                             }}>
                                 {msg.content}
                             </div>

@@ -1254,23 +1254,10 @@ export default function AdminDashboard() {
                                         {fbLeads.length === 0 && (
                                             <div style={{ padding: '20px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>No leads found.</div>
                                         )}
-                                                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--admin-card)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', border: `2px solid ${lead.color}` }}>
-                                                    {lead.name.charAt(0)}
-                                                </div>
-                                                <div style={{ flex: 1 }}>
-                                                    <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{lead.name}</div>
-                                                    <div style={{ fontSize: '13px', color: 'var(--admin-text-muted)', marginTop: '2px' }}>{lead.request}</div>
-                                                </div>
-                                                <div style={{ textAlign: 'right' }}>
-                                                    <div style={{ fontSize: '12px', fontWeight: 'bold', color: lead.color, background: `${lead.color}22`, padding: '4px 8px', borderRadius: '6px' }}>{lead.status}</div>
-                                                    <div style={{ fontSize: '11px', color: 'var(--admin-text-muted)', marginTop: '6px' }}>{lead.time}</div>
-                                                </div>
-                                            </div>
-                                        ))}
                                     </div>
                                 </div>
                             </div>
-
+                            
                             {/* Quick Access Cards */}
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: '16px', marginTop: '8px' }}>
                                 {[
@@ -1293,7 +1280,6 @@ export default function AdminDashboard() {
                                     </Link>
                                 ))}
                             </div>
-
                         </>
                     )}
 
