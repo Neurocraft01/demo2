@@ -153,18 +153,18 @@ export default async function AboutPage() {
                 </section>
 
                 {/* ─── LOCATION ─── */}
-                <section style={{ background: 'var(--bg-2)', borderTop: '1px solid var(--border)', padding: '80px 28px' }}>
-                    <div className="location-grid">
-                        <div className="anim">
+                <section style={{ background: 'var(--bg-2)', borderTop: '1px solid var(--border)', padding: '80px 28px', minHeight: '400px' }}>
+                    <div className="location-grid" style={{ opacity: 1, visibility: 'visible' }}>
+                        <div style={{ opacity: 1, transform: 'none' }}>
                             <div className="eyebrow">Where We Are</div>
                             <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 900, color: 'var(--ink)', letterSpacing: '-0.5px', marginBottom: '20px' }}>
-                                {LOCATION.title} <span style={{ color: 'var(--blue)' }}>{LOCATION.titleAccent}</span>
+                                {LOCATION?.title || "Our"} <span style={{ color: 'var(--blue)' }}>{LOCATION?.titleAccent || "Location"}</span>
                             </h2>
                             <p style={{ color: 'var(--ink-3)', fontSize: '16px', lineHeight: 1.8, marginBottom: '28px' }}>
-                                {LOCATION.description}
+                                {LOCATION?.description || "Find us around the globe."}
                             </p>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                {LOCATION.details.map((item: any) => (
+                                {(LOCATION?.details || []).map((item: any) => (
                                     <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--ink-3)', fontSize: '15px' }}>
                                         <i className={`bx ${item.icon}`} style={{ color: 'var(--blue)', fontSize: '20px', flexShrink: 0 }} />
                                         {item.text}
@@ -172,11 +172,11 @@ export default async function AboutPage() {
                                 ))}
                             </div>
                         </div>
-                        <div className="anim" style={{ background: 'var(--bg-3)', border: '1px solid var(--border)', borderRadius: 'var(--r-xl)', padding: '48px', textAlign: 'center' }}>
+                        <div style={{ background: 'var(--bg-3)', border: '1px solid var(--border)', borderRadius: 'var(--r-xl)', padding: '48px', textAlign: 'center', opacity: 1, transform: 'none' }}>
                             <div style={{ fontSize: '4rem', marginBottom: '16px' }}>📍</div>
-                            <div style={{ fontWeight: 800, fontSize: '20px', color: 'var(--ink)', marginBottom: '8px' }}>{LOCATION.mapLabel}</div>
-                            <div style={{ color: 'var(--ink-3)', fontSize: '14px', marginBottom: '28px' }}>{LOCATION.mapSublabel}</div>
-                            <a href={LOCATION.mapLink} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+                            <div style={{ fontWeight: 800, fontSize: '20px', color: 'var(--ink)', marginBottom: '8px' }}>{LOCATION?.mapLabel || 'Global'}</div>
+                            <div style={{ color: 'var(--ink-3)', fontSize: '14px', marginBottom: '28px' }}>{LOCATION?.mapSublabel || 'Everywhere'}</div>
+                            <a href={LOCATION?.mapLink || '#'} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
                                 <i className="bx bx-map" /> Open in Maps
                             </a>
                         </div>

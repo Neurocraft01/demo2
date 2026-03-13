@@ -686,6 +686,9 @@ export default function AdminDashboard() {
     const [editorData, setEditorData] = useState<any>(null);
     const [isSaving, setIsSaving] = useState(false);
 
+    // ─── Analytics State ──────────────────────────────────────────────────────
+    const [trafficData, setTrafficData] = useState<Record<string, number>>({});
+
     // ─── Facebook Leads State ─────────────────────────────────────────────────
     const [fbLeads, setFbLeads] = useState<any[]>([]);
     const [fbLeadsLoading, setFbLeadsLoading] = useState(false);
@@ -902,9 +905,22 @@ export default function AdminDashboard() {
             if (res.ok) {
                 setIsAuthenticated(true);
                 loadContent();
+                loadAnalytics();
             }
         } finally {
             setAuthChecked(true);
+        }
+    };
+
+    const loadAnalytics = async () => {
+        try {
+            const res = await fetch('/api/track');
+            if (res.ok) {
+                const data = await res.json();
+                setTrafficData(data);
+            }
+        } catch (err) {
+            console.error('Error loading analytics', err);
         }
     };
 
@@ -944,6 +960,7 @@ export default function AdminDashboard() {
             if (res.ok) {
                 setIsAuthenticated(true);
                 loadContent();
+                loadAnalytics();
             } else {
                 const data = await res.json();
                 setError(data.error || 'Invalid password');
@@ -1127,57 +1144,56 @@ export default function AdminDashboard() {
                                 <div className="admin-card">
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                         <div>
-                                            <div style={{ color: 'var(--admin-text-muted)', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase' }}>Live Visitors</div>
-                                            <div style={{ fontSize: '36px', fontWeight: '900', marginTop: '12px', color: 'var(--admin-primary)' }}>1,402</div>
+                                            <div style={{ color: 'var(--admin-text-muted)', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase' }}>Total Views</div>
+                                            <div style={{ fontSize: '36px', fontWeight: '900', marginTop: '12px', color: 'var(--admin-primary)' }}>{Object.values(trafficData).reduce((a, b) => a + b, 0)}</div>
                                         </div>
                                         <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'var(--admin-primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--admin-primary)' }}>
                                             <span className="material-symbols-outlined">group</span>
                                         </div>
                                     </div>
                                     <div style={{ marginTop: '16px', fontSize: '13px', color: 'var(--admin-success)', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}>
-                                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>trending_up</span> +14.2% since yesterday
                                     </div>
                                 </div>
                                 <div className="admin-card">
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                         <div>
-                                            <div style={{ color: 'var(--admin-text-muted)', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase' }}>Avg. Page Speed</div>
-                                            <div style={{ fontSize: '36px', fontWeight: '900', marginTop: '12px', color: 'var(--admin-success)' }}>100%</div>
+                                            <div style={{ color: 'var(--admin-text-muted)', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase' }}>Today's Views</div>
+                                            <div style={{ fontSize: '36px', fontWeight: '900', marginTop: '12px', color: 'var(--admin-success)' }}>{trafficData[new Date().toISOString().split('T')[0]] || 0}</div>
                                         </div>
                                         <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'var(--admin-success-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--admin-success)' }}>
                                             <span className="material-symbols-outlined">bolt</span>
                                         </div>
                                     </div>
                                     <div style={{ marginTop: '16px', fontSize: '13px', color: 'var(--admin-text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                        Lighthouse Core Vitals passed
+                                        Unique requests today
                                     </div>
                                 </div>
                                 <div className="admin-card">
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                         <div>
                                             <div style={{ color: 'var(--admin-text-muted)', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase' }}>Total Leads</div>
-                                            <div style={{ fontSize: '36px', fontWeight: '900', marginTop: '12px', color: '#8B5CF6' }}>89</div>
+                                            <div style={{ fontSize: '36px', fontWeight: '900', marginTop: '12px', color: '#8B5CF6' }}>{fbLeads.length}</div>
                                         </div>
                                         <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(139, 92, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8B5CF6' }}>
                                             <span className="material-symbols-outlined">email</span>
                                         </div>
                                     </div>
                                     <div style={{ marginTop: '16px', fontSize: '13px', color: 'var(--admin-success)', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}>
-                                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>trending_up</span> +3 today
                                     </div>
                                 </div>
                                 <div className="admin-card">
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                         <div>
-                                            <div style={{ color: 'var(--admin-text-muted)', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase' }}>Conversion Rate</div>
-                                            <div style={{ fontSize: '36px', fontWeight: '900', marginTop: '12px', color: '#ec4899' }}>6.4%</div>
+                                            <div style={{ color: 'var(--admin-text-muted)', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase' }}>Latest Lead</div>
+                                            <div style={{ fontSize: '36px', fontWeight: '900', marginTop: '12px', color: '#ec4899', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '150px' }}>
+                                                {fbLeads.length > 0 ? (fbLeads[0].field_data?.find((f: any) => f.name === 'full_name')?.values[0] || 'Unknown') : '-'}
+                                            </div>
                                         </div>
                                         <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(236, 72, 153, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ec4899' }}>
                                             <span className="material-symbols-outlined">pie_chart</span>
                                         </div>
                                     </div>
                                     <div style={{ marginTop: '16px', fontSize: '13px', color: 'var(--admin-warning)', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}>
-                                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_right_alt</span> Steady
                                     </div>
                                 </div>
                             </div>
@@ -1188,29 +1204,56 @@ export default function AdminDashboard() {
                                         <h3 style={{ margin: '0 0 8px 0', fontSize: '20px' }}>Website Traffic Over Time</h3>
                                         <button className="admin-btn-outline" style={{ padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold' }}>Last 7 Days</button>
                                     </div>
-                                    <p style={{ color: 'var(--admin-text-muted)', fontSize: '14px', marginBottom: '20px' }}>A simulation of your server visit volume and peak active hours.</p>
+                                    <p style={{ color: 'var(--admin-text-muted)', fontSize: '14px', marginBottom: '20px' }}>Real-time unique hits across your site pages.</p>
 
                                     <div className="chart-bar-wrap">
-                                        {[40, 65, 30, 85, 50, 95, 75].map((val, i) => (
-                                            <div key={i} className="chart-bar" style={{ height: `${val}%` }}>
-                                                <div className="chart-bar-tooltip">{val}k Visits</div>
-                                            </div>
-                                        ))}
+                                        {Array.from({ length: 7 }).map((_, i) => {
+                                            const d = new Date();
+                                            d.setDate(d.getDate() - (6 - i));
+                                            const dateStr = d.toISOString().split('T')[0];
+                                            const val = trafficData[dateStr] || 0;
+                                            const maxVal = Math.max(...Array.from({ length: 7 }).map((_, j) => {
+                                                const d2 = new Date(); d2.setDate(d2.getDate() - (6 - j));
+                                                return trafficData[d2.toISOString().split('T')[0]] || 0;
+                                            }), 10);
+                                            const height = (val / maxVal) * 100;
+                                            return (
+                                                <div key={i} className="chart-bar" style={{ height: `${height}%` }}>
+                                                    <div className="chart-bar-tooltip">{val} Visits</div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px', color: 'var(--admin-text-muted)', fontSize: '12px', fontWeight: 'bold' }}>
-                                        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                                        {Array.from({ length: 7 }).map((_, i) => {
+                                            const d = new Date();
+                                            d.setDate(d.getDate() - (6 - i));
+                                            return <span key={i}>{d.toLocaleDateString('en-US', { weekday: 'short' })}</span>;
+                                        })}
                                     </div>
                                 </div>
 
                                 <div className="admin-card">
                                     <h3 style={{ margin: '0 0 24px 0', fontSize: '20px' }}>Recent Hot Leads</h3>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                                        {[
-                                            { name: 'Michael C.', request: 'New E-commerce build', time: '10 min ago', status: 'New', color: 'var(--admin-success)' },
-                                            { name: 'Sarah L.', request: 'SEO Optimization', time: '2 hrs ago', status: 'Emailed', color: 'var(--admin-primary)' },
-                                            { name: 'David R.', request: 'Custom CMS logic', time: 'Yesterday', status: 'Scheduled', color: 'var(--admin-warning)' },
-                                        ].map((lead, i) => (
+                                        {fbLeads.slice(0, 3).map((lead, i) => (
                                             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px', borderRadius: '12px', border: '1px solid var(--admin-border)', background: 'var(--admin-hover)' }}>
+                                                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'var(--admin-primary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 'bold' }}>
+                                                    {((lead.field_data?.find((f: any) => f.name === 'full_name')?.values[0]) || '?').charAt(0).toUpperCase()}
+                                                </div>
+                                                <div style={{ flex: 1 }}>
+                                                    <div style={{ fontWeight: 'bold', fontSize: '15px' }}>{lead.field_data?.find((f: any) => f.name === 'full_name')?.values[0] || 'Unknown'}</div>
+                                                    <div style={{ color: 'var(--admin-text-muted)', fontSize: '13px', marginTop: '4px' }}>{lead.form_id || 'Requested a free consultation'}</div>
+                                                </div>
+                                                <div style={{ textAlign: 'right' }}>
+                                                    <div style={{ fontSize: '12px', color: 'var(--admin-text-muted)' }}>{new Date(lead.received_at).toLocaleDateString()}</div>
+                                                    <div style={{ marginTop: '4px', fontSize: '12px', fontWeight: 'bold', color: 'var(--admin-primary)' }}>{lead.status.toUpperCase()}</div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {fbLeads.length === 0 && (
+                                            <div style={{ padding: '20px', textAlign: 'center', color: 'var(--admin-text-muted)' }}>No leads found.</div>
+                                        )}
                                                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--admin-card)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', border: `2px solid ${lead.color}` }}>
                                                     {lead.name.charAt(0)}
                                                 </div>

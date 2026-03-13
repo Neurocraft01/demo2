@@ -65,11 +65,11 @@ export default function ProjectsClient({ data, siteData }: { data: any, siteData
                             <div className="card-content">
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '40px' }}>
                                     {/* Company Logo or Fallback Initial */}
-                                    <div style={{ width: '48px', height: '48px', borderRadius: '16px', background: `linear-gradient(135deg, ${accent}33, ${accent}11)`, border: `1px solid ${accent}44`, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
+                                    <div style={{ width: '64px', height: '64px', borderRadius: '20px', background: `linear-gradient(135deg, ${accent}33, ${accent}11)`, border: `1px solid ${accent}44`, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0 }}>
                                         {project.logo ? (
-                                            <img src={project.logo} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }} />
+                                            <img src={project.logo} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }} />
                                         ) : (
-                                            <span style={{ fontSize: '20px', fontWeight: 800, color: accent }}>{project.title.charAt(0)}</span>
+                                            <span style={{ fontSize: '24px', fontWeight: 800, color: accent }}>{project.title.charAt(0)}</span>
                                         )}
                                     </div>
                                     {project.link !== '#' && (

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import Chatbot from "@/components/chat/Chatbot";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -19,6 +20,9 @@ export const metadata: Metadata = {
     ],
     apple: '/favicon.png',
   },
+  verification: {
+    google: "pFeIDKiii4cNwDjvG03uGep45TWXhTAQ2OmiBLbVphk",
+  },
 };
 
 export default function RootLayout({
@@ -37,7 +41,10 @@ export default function RootLayout({
         }} />
         {/* Load external icon stylesheets non-blocking via JS after DOM is ready */}
         <script dangerouslySetInnerHTML={{
-          __html: `window.addEventListener('load',function(){var a=['https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css','https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'];a.forEach(function(h){var l=document.createElement('link');l.rel='stylesheet';l.href=h;document.head.appendChild(l)})});`
+          __html: `window.addEventListener('load',function(){var a=['https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css','https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'];a.forEach(function(h){var l=document.createElement('link');l.rel='stylesheet';l.href=h;document.head.appendChild(l)});
+          // Tracker
+          fetch('/api/track', { method: 'POST', keepalive: true }).catch(()=>{});
+          });`
         }} />
         <noscript>
           <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
@@ -46,6 +53,7 @@ export default function RootLayout({
       </head>
       <body className={outfit.className}>
         {children}
+        <Chatbot />
       </body>
     </html>
   );
